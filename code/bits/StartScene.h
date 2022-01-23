@@ -4,6 +4,8 @@
 #include <gf/Scene.h>
 #include <gf/Action.h>
 
+#include "TitleEntity.h"
+
 namespace xy {
 
   struct GameHub;
@@ -20,6 +22,8 @@ namespace xy {
 
     gf::Action m_startAction;
     gf::Action m_fullscreenAction;
+
+    TitleEntity m_titleEntity;
   };
 
 }

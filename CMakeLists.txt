@@ -23,6 +23,7 @@ add_executable(${GAME}
   code/bits/GameHub.cc
   code/bits/GameState.cc
   code/bits/StartScene.cc
+  code/bits/TitleEntity.cc
 )
 
 target_include_directories(${GAME}

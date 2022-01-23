@@ -11,6 +11,7 @@ namespace xy {
   , m_game(game)
   , m_startAction("Start")
   , m_fullscreenAction("Fullscreen")
+  , m_titleEntity(game.resources)
   {
     setClearColor(gf::Color::Black);
 
@@ -22,6 +23,8 @@ namespace xy {
 
 //     m_fullscreenAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::Guide);
     addAction(m_fullscreenAction);
+
+    addHudEntity(m_titleEntity);
   }
 
   void StartScene::doHandleActions([[maybe_unused]] gf::Window& window) {
