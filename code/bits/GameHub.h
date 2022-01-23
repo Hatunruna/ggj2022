@@ -3,6 +3,8 @@
 
 #include <gf/GameManager.h>
 
+#include "GameData.h"
+#include "GameState.h"
 #include "StartScene.h"
 
 namespace xy {
@@ -10,8 +12,8 @@ namespace xy {
   struct GameHub : gf::GameManager {
     GameHub();
 
-//     GameData data;
-//     GameState state;
+    GameData data;
+    GameState state;
 
     StartScene start;
   };
