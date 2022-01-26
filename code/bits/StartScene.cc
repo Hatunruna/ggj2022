@@ -11,7 +11,7 @@ namespace xy {
   , m_game(game)
   , m_startAction("Start")
   , m_fullscreenAction("Fullscreen")
-  , m_titleEntity(game.resources)
+  , m_titleEntity(game.resources, game.audio)
   {
     setClearColor(gf::Color::Black);
 

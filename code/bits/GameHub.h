@@ -3,6 +3,7 @@
 
 #include <gf/GameManager.h>
 
+#include "AudioManager.h"
 #include "GameData.h"
 #include "GameState.h"
 #include "StartScene.h"
@@ -11,6 +12,8 @@ namespace xy {
 
   struct GameHub : gf::GameManager {
     GameHub();
+
+    AudioManager audio;
 
     GameData data;
     GameState state;

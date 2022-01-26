@@ -9,6 +9,7 @@ project(${GAME}
 include(GNUInstallDirs)
 
 find_package(gf REQUIRED COMPONENTS graphics)
+find_package(SFML REQUIRED COMPONENTS audio)
 
 if (UNIX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
@@ -19,6 +20,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/code/config.h.in ${CMAKE_CURRENT_BINA
 
 add_executable(${GAME}
   code/main.cc
+  code/bits/AudioManager.cc
   code/bits/GameData.cc
   code/bits/GameHub.cc
   code/bits/GameState.cc
@@ -40,6 +42,7 @@ target_compile_definitions(${GAME}
 target_link_libraries(${GAME}
   PRIVATE
     gf::graphics
+    sfml-audio
 )
 
 install(

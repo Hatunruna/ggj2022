@@ -8,10 +8,12 @@
 
 namespace xy {
 
-  TitleEntity::TitleEntity(gf::ResourceManager& resources)
+  TitleEntity::TitleEntity(gf::ResourceManager& resources, AudioManager& audio)
   : m_font(resources.getFont("GoudyBookletter1911.otf"))
 //   , m_backgroundTexture(resources.getTexture("logo.png"))
+  , m_music(audio.getMusic("audio.wav"))
   {
+    m_music.play();
   }
 
   void TitleEntity::update([[maybe_unused]] gf::Time time) {
