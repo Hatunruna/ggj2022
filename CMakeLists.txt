@@ -32,6 +32,11 @@ target_include_directories(${GAME}
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
+target_compile_definitions(${GAME}
+  PRIVATE
+    $<$<CONFIG:DEBUG>:GAME_DATADIR_DEBUG="${CMAKE_SOURCE_DIR}/data/Game/">
+)
+
 target_link_libraries(${GAME}
   PRIVATE
     gf::graphics
