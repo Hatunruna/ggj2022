@@ -15,7 +15,7 @@ if (UNIX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
 endif ()
 
-set(GAME_DATADIR "${CMAKE_INSTALL_PREFIX}/share/games/${GAME}")
+set(GAME_DATADIR "${CMAKE_INSTALL_PREFIX}/share/games/${GAME}" CACHE PATH "Game Data Dir")
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/code/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h @ONLY)
 
 add_executable(${GAME}
@@ -34,11 +34,6 @@ target_include_directories(${GAME}
   PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/code
     ${CMAKE_CURRENT_BINARY_DIR}
-)
-
-target_compile_definitions(${GAME}
-  PRIVATE
-    $<$<CONFIG:DEBUG>:GAME_DATADIR_DEBUG="${CMAKE_SOURCE_DIR}/data/Game/">
 )
 
 target_link_libraries(${GAME}
