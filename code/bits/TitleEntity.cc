@@ -6,10 +6,10 @@
 #include <gf/Sprite.h>
 #include <gf/Text.h>
 
-namespace xy {
+namespace hg {
 
   TitleEntity::TitleEntity(gf::ResourceManager& resources, AudioManager& audio)
-  : m_font(resources.getFont("GoudyBookletter1911.otf"))
+  : m_font(resources.getFont("Underdog.otf"))
 //   , m_backgroundTexture(resources.getTexture("logo.png"))
   , m_music(audio.getMusic("audio.wav"))
   {
@@ -34,7 +34,7 @@ namespace xy {
 
     unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.1f);
 
-    gf::Text title("The Title of The Game", m_font, titleCharacterSize);
+    gf::Text title("Hanz and Gret", m_font, titleCharacterSize);
     title.setColor(gf::Color::White);
     title.setPosition(coords.getCenter());
     title.setAnchor(gf::Anchor::Center);
@@ -42,7 +42,7 @@ namespace xy {
 
     unsigned subtitleCharacterSize = coords.getRelativeCharacterSize(0.05f);
 
-    gf::Text subtitle("The Subtitle of the Game", m_font, subtitleCharacterSize);
+    gf::Text subtitle("Escape the lab", m_font, subtitleCharacterSize);
     subtitle.setColor(gf::Color::White);
     subtitle.setPosition(coords.getRelativePoint({ 0.5f, 0.6f }));
     subtitle.setAnchor(gf::Anchor::Center);

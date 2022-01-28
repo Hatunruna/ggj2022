@@ -4,7 +4,7 @@
 
 #include "GameHub.h"
 
-namespace xy {
+namespace hg {
 
   StartScene::StartScene(GameHub& game)
   : gf::Scene(game.getRenderer().getSize())

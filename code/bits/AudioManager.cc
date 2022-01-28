@@ -1,6 +1,6 @@
 #include "AudioManager.h"
 
-namespace xy {
+namespace hg {
 
   namespace {
 

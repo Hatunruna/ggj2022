@@ -4,7 +4,7 @@
 #include <gf/SerializationOps.h>
 #include <gf/Streams.h>
 
-namespace xy {
+namespace hg {
 
   void GameState::loadFromFile(const gf::Path& filename) {
     gf::FileInputStream file(filename);

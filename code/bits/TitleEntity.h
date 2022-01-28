@@ -1,5 +1,5 @@
-#ifndef XY_TITLE_ENTITY_H
-#define XY_TITLE_ENTITY_H
+#ifndef HG_TITLE_ENTITY_H
+#define HG_TITLE_ENTITY_H
 
 #include <gf/Entity.h>
 #include <gf/Font.h>
@@ -7,7 +7,7 @@
 
 #include "AudioManager.h"
 
-namespace xy {
+namespace hg {
 
   class TitleEntity : public gf::Entity {
   public:
@@ -25,4 +25,4 @@ namespace xy {
 }
 
 
-#endif // XY_TITLE_ENTITY_H
+#endif // HG_TITLE_ENTITY_H

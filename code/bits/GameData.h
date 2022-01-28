@@ -1,7 +1,7 @@
-#ifndef XY_GAME_DATA_H
-#define XY_GAME_DATA_H
+#ifndef HG_GAME_DATA_H
+#define HG_GAME_DATA_H
 
-namespace xy {
+namespace hg {
 
   struct GameData {
 
@@ -9,4 +9,4 @@ namespace xy {
 
 }
 
-#endif // XY_GAME_DATA_H
+#endif // HG_GAME_DATA_H

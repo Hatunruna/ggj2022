@@ -1,5 +1,5 @@
-#ifndef XY_AUDIO_MANAGER_H
-#define XY_AUDIO_MANAGER_H
+#ifndef HG_AUDIO_MANAGER_H
+#define HG_AUDIO_MANAGER_H
 
 #include <mutex>
 
@@ -8,7 +8,7 @@
 
 #include <SFML/Audio.hpp>
 
-namespace xy {
+namespace hg {
 
   class AudioManager : public gf::AssetManager {
   public:
@@ -35,4 +35,4 @@ namespace xy {
 }
 
 
-#endif // XY_GAME_HUB_H
+#endif // HG_GAME_HUB_H

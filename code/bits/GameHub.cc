@@ -2,10 +2,10 @@
 
 #include "config.h"
 
-namespace xy {
+namespace hg {
 
   GameHub::GameHub()
-  : GameManager("Game", { GAME_DATADIR })
+  : GameManager("Hanz and Gret", { GAME_DATADIR })
   , audio({ GAME_DATADIR })
   , start(*this)
   {
