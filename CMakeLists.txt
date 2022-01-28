@@ -38,7 +38,7 @@ target_include_directories(${GAME}
 
 target_compile_definitions(${GAME}
   PRIVATE
-    $<$<CONFIG:DEBUG>:GAME_DATADIR_DEBUG="${CMAKE_SOURCE_DIR}/data/Game/">
+    $<$<CONFIG:DEBUG>:GAME_DATADIR_DEBUG="${CMAKE_SOURCE_DIR}/data/${GAME}">
 )
 
 target_link_libraries(${GAME}
@@ -61,4 +61,3 @@ install(
 
 add_executable(tiles code/tiles.cc)
 target_link_libraries(tiles gf::core)
-
