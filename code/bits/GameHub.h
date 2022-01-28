@@ -6,6 +6,7 @@
 #include "AudioManager.h"
 #include "GameData.h"
 #include "GameState.h"
+#include "LevelScene.h"
 #include "StartScene.h"
 
 namespace hg {
@@ -19,6 +20,9 @@ namespace hg {
     GameState state;
 
     StartScene start;
+    LevelScene level;
+
+
   };
 
 

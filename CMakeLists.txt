@@ -24,6 +24,8 @@ add_executable(${GAME}
   code/bits/GameData.cc
   code/bits/GameHub.cc
   code/bits/GameState.cc
+  code/bits/LayerEntity.cc
+  code/bits/LevelScene.cc
   code/bits/StartScene.cc
   code/bits/TitleEntity.cc
 )
