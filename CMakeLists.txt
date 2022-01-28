@@ -54,3 +54,9 @@ install(
   DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data/${GAME}"
   DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/games"
 )
+
+# tools
+
+add_executable(tiles code/tiles.cc)
+target_link_libraries(tiles gf::core)
+
