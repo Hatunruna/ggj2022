@@ -17,14 +17,12 @@ namespace xy {
 
     sf::Music& getMusic(const gf::Path& path) {
       std::lock_guard<std::mutex> lock(m_mutex);
-      auto& music = m_musics.getResource(*this, path);
-      return music;
+      return m_musics.getResource(*this, path);
     }
 
-    sf::Sound getSound(const gf::Path& path) {
+    sf::SoundBuffer& getSound(const gf::Path& path) {
       std::lock_guard<std::mutex> lock(m_mutex);
-      auto& buffer = m_sounds.getResource(*this, path);
-      return sf::Sound(buffer);
+      return m_sounds.getResource(*this, path);
     }
 
   private:
