@@ -56,4 +56,3 @@ install(
 
 add_executable(tiles code/tiles.cc)
 target_link_libraries(tiles gf::core)
-
