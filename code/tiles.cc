@@ -274,6 +274,17 @@ namespace {
     image.saveToFile(path);
   }
 
+  void makeSink(gf::Color4f color, gf::Path path) {
+    gf::Image image = makeBase();
+
+    for (int k = 0; k < Size; ++k) {
+      image.setPixel(gf::vec(k, k), gf::Color::toRgba32(color));
+      image.setPixel(gf::vec(k, Size - k - 1), gf::Color::toRgba32(color));
+    }
+
+    image.saveToFile(path);
+  }
+
 }
 
 
@@ -292,7 +303,7 @@ int main() {
 
   makeCross(gf::Color::White, "06-platform_neutral_C.png");
 
-  base.saveToFile("07-empty.png");
+  makeSink(gf::Color::White, "07-sink.png");
 
   // red
 
@@ -306,7 +317,7 @@ int main() {
 
   makeCross(gf::Color::Red, "14-platform_red_C.png");
 
-  base.saveToFile("15-empty.png");
+  makeSink(gf::Color::Red, "15-start_red.png");
 
   // blue
 
@@ -320,8 +331,7 @@ int main() {
 
   makeCross(gf::Color::Blue, "22-platform_blue_C.png");
 
-  base.saveToFile("23-empty.png");
-
+  makeSink(gf::Color::Blue, "23-start_blue.png");
 
   // limits
 
