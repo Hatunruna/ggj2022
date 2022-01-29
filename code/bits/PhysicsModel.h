@@ -43,8 +43,8 @@ namespace hg {
 
 
   private:
-    bool applyJump(Body& body, bool colliding);
-    void applyDirection(Body& body, gf::Direction direction);
+    bool applyJump(Body& body, float factor, bool colliding);
+    void applyDirection(Body& body, float factor, gf::Direction direction);
 
     void applyGravity(Body& body, gf::Time time);
     void checkCollision(Body& body, bool& colliding);

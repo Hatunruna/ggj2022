@@ -76,9 +76,9 @@ namespace hg {
   bool PhysicsModel::jump(Hero hero) {
     switch (hero) {
       case Hero::Hanz:
-        return applyJump(m_hanz, m_isHanzColliding);
+        return applyJump(m_hanz, 1.25f, m_isHanzColliding);
       case Hero::Gret:
-        return applyJump(m_gret, m_isGretColliding);
+        return applyJump(m_gret, 1.0f, m_isGretColliding);
     }
 
     assert(false);
@@ -88,10 +88,10 @@ namespace hg {
   void PhysicsModel::setDirection(Hero hero, gf::Direction direction) {
     switch (hero) {
       case Hero::Hanz:
-        applyDirection(m_hanz, direction);
+        applyDirection(m_hanz, 1.0f, direction);
         break;
       case Hero::Gret:
-        applyDirection(m_gret, direction);
+        applyDirection(m_gret, 1.5f, direction);
         break;
     }
   }
@@ -139,11 +139,11 @@ namespace hg {
     checkCollision(m_gret, m_isGretColliding);
   }
 
-  bool PhysicsModel::applyJump(Body& body, bool colliding) {
+  bool PhysicsModel::applyJump(Body& body, float factor, bool colliding) {
     gf::Log::debug("physic: collinding=%d y velocity=%d\n", colliding, std::abs(body.velocity.y) < gf::Epsilon);
     if (colliding && std::abs(body.velocity.y) < gf::Epsilon) {
       gf::Log::debug("jump OK\n");
-      body.velocity += JumpImpulse;
+      body.velocity += JumpImpulse * factor;
       return true;
     }
 
@@ -152,13 +152,13 @@ namespace hg {
     return false;
   }
 
-  void PhysicsModel::applyDirection(Body& body, gf::Direction direction) {
+  void PhysicsModel::applyDirection(Body& body, float factor, gf::Direction direction) {
     switch (direction) {
       case gf::Direction::Left:
-        body.velocity.x = -RunVelocity;
+        body.velocity.x = -RunVelocity * factor;
         break;
       case gf::Direction::Right:
-        body.velocity.x = +RunVelocity;
+        body.velocity.x = +RunVelocity * factor;
         break;
       case gf::Direction::Center:
         body.velocity.x = 0.0f;
@@ -188,7 +188,7 @@ namespace hg {
 
       if (gf::collides(otherBounds, bounds, penetration)) {
         colliding = true;
-        body.position += penetration.depth * penetration.normal * 0.2f;
+        body.position += penetration.depth * penetration.normal * 0.4f;
         body.velocity -= gf::dot(body.velocity, penetration.normal) * penetration.normal;
       }
     }
