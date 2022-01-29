@@ -118,6 +118,13 @@ namespace hg {
 
     gf::Log::debug("Number of platforms: %zu\n", data.platforms.size());
 
+    // limits harcoded for now...
+
+    limits.push_back({ gf::vec(0,0), gf::vec(0, 31) });
+    limits.push_back({ gf::vec(0,0), gf::vec(31, 0) });
+    limits.push_back({ gf::vec(31,31), gf::vec(0, 31) });
+    limits.push_back({ gf::vec(31,31), gf::vec(31, 0) });
+
     return data;
   }
 
