@@ -105,7 +105,6 @@ namespace hg {
     }
 
     if (m_hanzJumpAction.isActive()) {
-      gf::Log::debug("hanz jump pressed\n");
       m_hanz.jump();
     }
 

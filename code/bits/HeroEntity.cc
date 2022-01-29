@@ -119,11 +119,8 @@ namespace hg {
   }
 
   void HeroEntity::jump() {
-    gf::Log::debug("jump try\n");
     if (m_state == HeroState::Pause || m_state == HeroState::Run) {
-      gf::Log::debug("jump state OK\n");
       if (m_physics.jump(m_hero)) {
-        gf::Log::debug("jump triggered\n");
         m_jumpAnimation.reset();
         m_state = HeroState::Jump;
       }

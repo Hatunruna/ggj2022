@@ -140,14 +140,10 @@ namespace hg {
   }
 
   bool PhysicsModel::applyJump(Body& body, float factor, bool colliding) {
-    gf::Log::debug("physic: collinding=%d y velocity=%d\n", colliding, std::abs(body.velocity.y) < gf::Epsilon);
     if (colliding && std::abs(body.velocity.y) < gf::Epsilon) {
-      gf::Log::debug("jump OK\n");
       body.velocity += JumpImpulse * factor;
       return true;
     }
-
-    gf::Log::debug("jump KO\n");
 
     return false;
   }
