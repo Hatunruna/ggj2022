@@ -64,6 +64,31 @@ namespace hg {
 
   void LevelScene::loadLevel(const GameData& data, std::size_t number) {
     m_physics.loadLevel(data, number);
+
+    assert(number < data.levels.size());
+    const LevelData & level = data.levels[number];
+
+    for (auto & platform : level.platforms) {
+      PlatformState state;
+      
+      switch (platform.type)
+      {
+        case PlatformType::Neutral_H:
+        case PlatformType::Neutral_V:
+          state.color = HeroColor::NEUTRAL;
+          break;
+        case PlatformType::Red_H:
+        case PlatformType::Red_V:
+          state.color = HeroColor::RED;
+          break;
+        case PlatformType::Blue_H:
+        case PlatformType::Blue_V:
+          state.color = HeroColor::BLUE;
+          break;
+      }
+
+      m_game.state.level.platforms.push_back(state);
+    }
   }
 
   void LevelScene::doHandleActions([[maybe_unused]] gf::Window& window) {
