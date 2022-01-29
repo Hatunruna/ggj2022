@@ -20,10 +20,12 @@ namespace hg {
     setClearColor(gf::Color::Black);
 
     m_upAction.addGamepadAxisControl(gf::AnyGamepad, gf::GamepadAxis::LeftY, gf::GamepadAxisDirection::Positive);
+    m_upAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::DPadUp);
     m_upAction.addScancodeKeyControl(gf::Scancode::Up);
     addAction(m_upAction);
 
     m_downAction.addGamepadAxisControl(gf::AnyGamepad, gf::GamepadAxis::LeftY, gf::GamepadAxisDirection::Negative);
+    m_downAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::DPadDown);
     m_downAction.addScancodeKeyControl(gf::Scancode::Down);
     addAction(m_downAction);
 
@@ -76,7 +78,7 @@ namespace hg {
   }
 
   void QuitScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
-    constexpr float characterSize = 0.1f;
+    constexpr float characterSize = 0.075f;
     constexpr float spaceBetweenButton = 0.05f;
     constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
 
@@ -86,6 +88,7 @@ namespace hg {
 
     const gf::Vector2f backgroundRelativeSize = coords.getRelativeSize(backgroundSize);
     const float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
+    const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
     const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
 
     gf::RectangleShape background;
@@ -93,16 +96,17 @@ namespace hg {
     background.setSize(backgroundRelativeSize);
     background.setAnchor(gf::Anchor::Center);
     background.setColor(gf::Color::Gray(0.2f));
-
     background.draw(target, states);
 
     m_resumeButton.setCharacterSize(resumeCharacterSize);
     m_resumeButton.setPosition(coords.getRelativePoint({0.275f, 0.425f}));
     m_resumeButton.setParagraphWidth(paragraphWidth);
+    m_resumeButton.setPadding(paddingSize);
 
     m_quitButton.setCharacterSize(resumeCharacterSize);
     m_quitButton.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
     m_quitButton.setParagraphWidth(paragraphWidth);
+    m_quitButton.setPadding(paddingSize);
 
     m_widgets.render(target, states);
   }

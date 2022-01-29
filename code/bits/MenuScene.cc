@@ -25,10 +25,12 @@ namespace hg {
     addAction(m_quitAction);
 
     m_upAction.addGamepadAxisControl(gf::AnyGamepad, gf::GamepadAxis::LeftY, gf::GamepadAxisDirection::Positive);
+    m_upAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::DPadUp);
     m_upAction.addScancodeKeyControl(gf::Scancode::Up);
     addAction(m_upAction);
 
     m_downAction.addGamepadAxisControl(gf::AnyGamepad, gf::GamepadAxis::LeftY, gf::GamepadAxisDirection::Negative);
+    m_downAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::DPadDown);
     m_downAction.addScancodeKeyControl(gf::Scancode::Down);
     addAction(m_downAction);
 
@@ -86,8 +88,7 @@ namespace hg {
   }
 
   void MenuScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
-
-    constexpr float characterSize = 0.1f;
+    constexpr float characterSize = 0.075f;
     constexpr float spaceBetweenButton = 0.025f;
     constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
 
@@ -95,15 +96,18 @@ namespace hg {
     gf::Coordinates coords(target);
 
     const float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
+    const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
     const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
 
     m_tutoButton.setCharacterSize(resumeCharacterSize);
     m_tutoButton.setPosition(coords.getRelativePoint({0.275f, 0.425f}));
     m_tutoButton.setParagraphWidth(paragraphWidth);
+    m_tutoButton.setPadding(paddingSize);
 
     m_level1.setCharacterSize(resumeCharacterSize);
     m_level1.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
     m_level1.setParagraphWidth(paragraphWidth);
+    m_level1.setPadding(paddingSize);
 
     m_widgets.render(target, states);
     m_menuTitleEntity.render(target,states);
@@ -117,7 +121,7 @@ namespace hg {
 
     m_level1.setDefault();
     m_widgets.addWidget(m_level1);
-    
+
     m_widgets.selectNextWidget();
   }
 
