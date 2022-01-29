@@ -9,6 +9,7 @@ namespace hg {
   , audio({ GAME_DATADIR })
   , start(*this)
   , level(*this)
+  , quit(*this)
   {
     pushScene(start);
   }

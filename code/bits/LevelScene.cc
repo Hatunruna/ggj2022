@@ -23,6 +23,7 @@ namespace hg {
     setClearColor(gf::Color::Black);
 
     m_quitAction.addScancodeKeyControl(gf::Scancode::Escape);
+    m_quitAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::Start);
     addAction(m_quitAction);
 
     addWorldEntity(m_layer);
@@ -34,7 +35,7 @@ namespace hg {
     }
 
     if (m_quitAction.isActive()) {
-      window.close();
+      m_game.pushScene(m_game.quit);
     }
   }
 

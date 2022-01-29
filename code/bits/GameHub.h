@@ -8,6 +8,7 @@
 #include "GameState.h"
 #include "LevelScene.h"
 #include "StartScene.h"
+#include "QuitScene.h"
 
 namespace hg {
 
@@ -21,6 +22,7 @@ namespace hg {
 
     StartScene start;
     LevelScene level;
+    QuitScene quit;
 
 
   };

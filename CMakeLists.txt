@@ -30,6 +30,7 @@ add_executable(${GAME}
   code/bits/LevelScene.cc
   code/bits/StartScene.cc
   code/bits/TitleEntity.cc
+  code/bits/QuitScene.cc
 )
 
 target_include_directories(${GAME}
