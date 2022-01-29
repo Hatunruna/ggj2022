@@ -19,6 +19,7 @@ namespace hg {
     m_startAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::B);
     m_startAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::X);
     m_startAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::Y);
+    m_startAction.addKeycodeKeyControl(gf::Keycode::Space);
     addAction(m_startAction);
 
 //     m_fullscreenAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::Guide);
@@ -37,7 +38,7 @@ namespace hg {
     }
 
     if (m_startAction.isActive()) {
-      m_game.replaceScene(m_game.level);
+      m_game.replaceScene(m_game.menu);
     }
   }
 

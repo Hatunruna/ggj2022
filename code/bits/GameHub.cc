@@ -10,6 +10,7 @@ namespace hg {
   , data(resources)
   , start(*this)
   , level(*this)
+  , menu(*this)
   {
     pushScene(start);
   }
