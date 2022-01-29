@@ -188,7 +188,7 @@ namespace hg {
 
       if (gf::collides(otherBounds, bounds, penetration)) {
         colliding = true;
-        body.position += penetration.depth * penetration.normal;
+        body.position += penetration.depth * penetration.normal * 0.2f;
         body.velocity -= gf::dot(body.velocity, penetration.normal) * penetration.normal;
       }
     }
