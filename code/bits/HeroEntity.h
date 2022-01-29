@@ -43,6 +43,8 @@ namespace hg {
     gf::Texture& m_pauseTexture;
     gf::Texture& m_runTexture;
     gf::Animation m_runAnimation;
+    gf::Texture& m_jumpTexture;
+    gf::Animation m_jumpAnimation;
 
     // Actions
     gf::Direction m_facedDirection; // To handle pause position

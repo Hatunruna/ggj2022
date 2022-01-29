@@ -30,6 +30,7 @@ namespace hg {
     // Hanz actions
     gf::Action m_hanzRunLeftAction;
     gf::Action m_hanzRunRightAction;
+    gf::Action m_hanzJumpAction;
 
     // Gret actions
     gf::Action m_gretRunLeftAction;

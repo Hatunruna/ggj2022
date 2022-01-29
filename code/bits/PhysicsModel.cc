@@ -73,15 +73,16 @@ namespace hg {
     m_gret.collision = BodyCollision::WithGret;
   }
 
-  void PhysicsModel::jump(Hero hero) {
+  bool PhysicsModel::jump(Hero hero) {
     switch (hero) {
       case Hero::Hanz:
-        applyJump(m_hanz, m_isHanzColliding);
-        break;
+        return applyJump(m_hanz, m_isHanzColliding);
       case Hero::Gret:
-        applyJump(m_gret, m_isGretColliding);
-        break;
+        return applyJump(m_gret, m_isGretColliding);
     }
+
+    assert(false);
+    return false;
   }
 
   void PhysicsModel::setDirection(Hero hero, gf::Direction direction) {
@@ -138,10 +139,17 @@ namespace hg {
     checkCollision(m_gret, m_isGretColliding);
   }
 
-  void PhysicsModel::applyJump(Body& body, bool colliding) {
+  bool PhysicsModel::applyJump(Body& body, bool colliding) {
+    gf::Log::debug("physic: collinding=%d y velocity=%d\n", colliding, std::abs(body.velocity.y) < gf::Epsilon);
     if (colliding && std::abs(body.velocity.y) < gf::Epsilon) {
+      gf::Log::debug("jump OK\n");
       body.velocity += JumpImpulse;
+      return true;
     }
+
+    gf::Log::debug("jump KO\n");
+
+    return false;
   }
 
   void PhysicsModel::applyDirection(Body& body, gf::Direction direction) {

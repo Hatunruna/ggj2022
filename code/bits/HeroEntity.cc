@@ -35,15 +35,19 @@ namespace hg {
   , m_state(HeroState::Pause)
   , m_pauseTexture(getHeroTexture(resources, "pause.png", hero))
   , m_runTexture(getHeroTexture(resources, "run.png", hero))
+  , m_jumpTexture(getHeroTexture(resources, "jump.png", hero))
   , m_facedDirection(gf::Direction::Left)
   , m_moveDirection(gf::Direction::Center)
   {
     // Smoothing textures
     m_pauseTexture.setSmooth();
     m_runTexture.setSmooth();
+    m_jumpTexture.setSmooth();
 
     // Load animation
     m_runAnimation.addTileset(m_runTexture, gf::vec(4, 3), gf::seconds(1.0f / 25.0f), 12);
+    m_jumpAnimation.addTileset(m_jumpTexture, gf::vec(3, 3), gf::seconds(1.0f / 25.0f), 7);
+    m_jumpAnimation.setLoop(false);
   }
 
   void HeroEntity::setDirection(gf::Direction direction) {
@@ -76,6 +80,9 @@ namespace hg {
 
       break;
 
+    case HeroState::Jump:
+      break;
+
     default:
       // TODO: jump
       // TODO: fall
@@ -89,12 +96,26 @@ namespace hg {
   }
 
   void HeroEntity::jump() {
-    m_physics.jump(m_hero);
+    gf::Log::debug("jump try\n");
+    if (m_state == HeroState::Pause || m_state == HeroState::Run) {
+      gf::Log::debug("jump state OK\n");
+      if (m_physics.jump(m_hero)) {
+        gf::Log::debug("jump triggered\n");
+        m_state = HeroState::Jump;
+      }
+    }
   }
 
   void HeroEntity::update(gf::Time time) {
-    if (m_moveDirection == gf::Direction::Left || m_moveDirection == gf::Direction::Right) {
+    switch (m_state) {
+    case HeroState::Run:
       m_runAnimation.update(time);
+      break;
+
+    case HeroState::Jump:
+      m_jumpAnimation.update(time);
+
+      break;
     }
   }
 
@@ -132,6 +153,10 @@ namespace hg {
 
     case HeroState::Run:
       drawAnimation(m_runAnimation, m_facedDirection == gf::Direction::Right);
+      break;
+
+    case HeroState::Jump:
+      drawAnimation(m_jumpAnimation, m_facedDirection == gf::Direction::Right);
       break;
 
     default:

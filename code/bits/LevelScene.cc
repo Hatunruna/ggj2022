@@ -1,5 +1,6 @@
 #include "LevelScene.h"
 
+#include <gf/Log.h>
 #include <gf/Color.h>
 
 #include "GameHub.h"
@@ -18,6 +19,7 @@ namespace hg {
   , m_quitAction("Quit")
   , m_hanzRunLeftAction("hanzRunLeft")
   , m_hanzRunRightAction("hanzRunRight")
+  , m_hanzJumpAction("hanzJump")
   , m_gretRunLeftAction("gretRunLeft")
   , m_gretRunRightAction("gretRunRight")
   , m_layer(game.scenery, game.state)
@@ -37,6 +39,9 @@ namespace hg {
     m_hanzRunRightAction.addGamepadAxisControl(gf::AnyGamepad, gf::GamepadAxis::LeftX, gf::GamepadAxisDirection::Positive);
     m_hanzRunRightAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::DPadRight);
     addAction(m_hanzRunRightAction);
+
+    m_hanzJumpAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::A);
+    addAction(m_hanzJumpAction);
 
     m_gretRunLeftAction.setContinuous();
     m_gretRunLeftAction.addScancodeKeyControl(gf::Scancode::A);
@@ -68,6 +73,11 @@ namespace hg {
 
     if (m_quitAction.isActive()) {
       m_game.pushScene(m_game.quit);
+    }
+
+    if (m_hanzJumpAction.isActive()) {
+      gf::Log::debug("hanz jump pressed\n");
+      m_hanz.jump();
     }
 
     if (m_hanzRunLeftAction.isActive()) {

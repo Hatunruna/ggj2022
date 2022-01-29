@@ -18,7 +18,7 @@ namespace hg {
 
     void loadLevel(const GameData& data, std::size_t number);
 
-    void jump(Hero hero);
+    bool jump(Hero hero);
     void setDirection(Hero hero, gf::Direction direction);
 
     gf::Vector2f getPosition(Hero hero) const;
@@ -43,7 +43,7 @@ namespace hg {
 
 
   private:
-    void applyJump(Body& body, bool colliding);
+    bool applyJump(Body& body, bool colliding);
     void applyDirection(Body& body, gf::Direction direction);
 
     void applyGravity(Body& body, gf::Time time);
