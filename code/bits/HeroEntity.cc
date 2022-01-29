@@ -32,6 +32,7 @@ namespace hg {
   HeroEntity::HeroEntity(gf::ResourceManager& resources, PhysicsModel& physics, AudioManager& audio, Hero hero)
   : m_physics(physics)
   , m_hero(hero)
+  , m_state(HeroState::Pause)
   , m_pauseTexture(getHeroTexture(resources, "pause.png", hero))
   , m_runTexture(getHeroTexture(resources, "run.png", hero))
   , m_facedDirection(gf::Direction::Left)
@@ -46,12 +47,42 @@ namespace hg {
   }
 
   void HeroEntity::setDirection(gf::Direction direction) {
-    m_moveDirection = direction;
+    switch(m_state) {
+    case HeroState::Pause:
+      if (direction == gf::Direction::Left || direction == gf::Direction::Right) {
+        m_moveDirection = direction;
+        m_facedDirection = direction;
 
-    if (direction == gf::Direction::Left || direction == gf::Direction::Right) {
-      m_facedDirection = direction;
-    } else if (direction == gf::Direction::Center) {
-      m_runAnimation.reset();
+        m_state = HeroState::Run;
+      }
+      // TODO: handle jump
+      // TODO: activate
+
+      break;
+
+    case HeroState::Run:
+      if (direction == gf::Direction::Left || direction == gf::Direction::Right) {
+        m_moveDirection = direction;
+        m_facedDirection = direction;
+      } else if (direction == gf::Direction::Center) {
+        m_moveDirection = direction;
+
+        m_state = HeroState::Pause;
+        m_runAnimation.reset();
+      }
+      // TODO: handle jump
+      // TODO: handle fall
+      // TODO: activate
+
+      break;
+
+    default:
+      // TODO: jump
+      // TODO: fall
+      // TODO: land
+      // TODO: activate
+      assert(false);
+      break;
     }
 
     m_physics.setDirection(m_hero, direction);
@@ -68,12 +99,12 @@ namespace hg {
   }
 
   void HeroEntity::render(gf::RenderTarget &target, const gf::RenderStates &states) {
-    auto drawAnimation = [this, &target, &states](gf::Animation animation, bool invert = false) {
+    auto drawAnimation = [this, &target, &states](gf::Animation& animation, bool inverted = false) {
       gf::AnimatedSprite sprite;
       sprite.setAnimation(animation);
       sprite.setAnchor(gf::Anchor::Center);
       sprite.setPosition(m_physics.getPosition(m_hero));
-      if (invert) {
+      if (inverted) {
         sprite.setScale(gf::vec(-TextureScale, TextureScale));
       } else {
         sprite.setScale(TextureScale);
@@ -81,10 +112,9 @@ namespace hg {
       target.draw(sprite, states);
     };
 
-    switch (m_moveDirection) {
-    case gf::Direction::Center: {
+    auto drawSprite = [this, &target, &states](gf::Texture& texture, bool inverted = false) {
       gf::Sprite sprite;
-      sprite.setTexture(m_pauseTexture);
+      sprite.setTexture(texture);
       sprite.setAnchor(gf::Anchor::Center);
       sprite.setPosition(m_physics.getPosition(m_hero));
       if (m_facedDirection == gf::Direction::Right) {
@@ -93,20 +123,20 @@ namespace hg {
         sprite.setScale(TextureScale);
       }
       target.draw(sprite, states);
-      break;
-    }
+    };
 
-    case gf::Direction::Left:
-      drawAnimation(m_runAnimation);
+    switch (m_state) {
+    case HeroState::Pause:
+      drawSprite(m_pauseTexture, m_facedDirection == gf::Direction::Right);
       break;
 
-    case gf::Direction::Right:
-      drawAnimation(m_runAnimation, true);
+    case HeroState::Run:
+      drawAnimation(m_runAnimation, m_facedDirection == gf::Direction::Right);
       break;
 
     default:
       assert(false);
+      break;
     }
-
   }
 }

@@ -10,7 +10,17 @@
 #include "Hero.h"
 
 namespace hg {
+
   class PhysicsModel;
+
+  enum class HeroState {
+    Pause,
+    Run,
+    Jump,
+    Fall,
+    Land,
+    Activate,
+  };
 
   class HeroEntity : public gf::Entity {
   public:
@@ -27,6 +37,7 @@ namespace hg {
 
     // State
     Hero m_hero;
+    HeroState m_state;
 
     // Graphics
     gf::Texture& m_pauseTexture;
