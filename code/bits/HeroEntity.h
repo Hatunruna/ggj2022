@@ -1,6 +1,8 @@
 #ifndef HG_HERO_ENTITY_H
 #define HG_HERO_ENTITY_H
 
+#include <gf/Animation.h>
+#include <gf/Direction.h>
 #include <gf/Entity.h>
 #include <gf/ResourceManager.h>
 
@@ -16,12 +18,24 @@ namespace hg {
   public:
     HeroEntity(gf::ResourceManager& resources, AudioManager& audio, HeroColor color, gf::Vector2f position);
 
+    void setDirection(gf::Direction direction);
+
+    void update(gf::Time time) override;
     void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
 
   private:
+    // State
     const HeroColor m_color;
-    gf::Vector2f m_postion;
+    gf::Vector2f m_position;
+
+    // Graphics
     const gf::Texture& m_pauseTexture;
+    const gf::Texture& m_runTexture;
+    gf::Animation m_runAnimation;
+
+    // Actions
+    gf::Direction m_facedDirection; // To handle pause position
+    gf::Direction m_moveDirection;
   };
 }
 

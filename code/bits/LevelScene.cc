@@ -16,6 +16,10 @@ namespace hg {
   : gf::Scene(game.getRenderer().getSize())
   , m_game(game)
   , m_quitAction("Quit")
+  , m_hanzRunLeftAction("hanzRunLeft")
+  , m_hanzRunRightAction("hanzRunRight")
+  , m_gretRunLeftAction("gretRunLeft")
+  , m_gretRunRightAction("gretRunRight")
   , m_layer(game.scenery, game.state)
   , m_hanz(game.resources, game.audio, HeroColor::Red, WorldSize * 0.2f)
   , m_gret(game.resources, game.audio, HeroColor::Blue, WorldSize * 0.8f)
@@ -23,6 +27,24 @@ namespace hg {
     setWorldViewCenter(WorldSize / 2);
     setWorldViewSize(WorldSize);
     setClearColor(gf::Color::Black);
+
+    m_hanzRunLeftAction.setContinuous();
+    m_hanzRunLeftAction.addGamepadAxisControl(gf::AnyGamepad, gf::GamepadAxis::LeftX, gf::GamepadAxisDirection::Negative);
+    m_hanzRunLeftAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::DPadLeft);
+    addAction(m_hanzRunLeftAction);
+
+    m_hanzRunRightAction.setContinuous();
+    m_hanzRunRightAction.addGamepadAxisControl(gf::AnyGamepad, gf::GamepadAxis::LeftX, gf::GamepadAxisDirection::Positive);
+    m_hanzRunRightAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::DPadRight);
+    addAction(m_hanzRunRightAction);
+
+    m_gretRunLeftAction.setContinuous();
+    m_gretRunLeftAction.addScancodeKeyControl(gf::Scancode::A);
+    addAction(m_gretRunLeftAction);
+
+    m_gretRunRightAction.setContinuous();
+    m_gretRunRightAction.addScancodeKeyControl(gf::Scancode::D);
+    addAction(m_gretRunRightAction);
 
     m_quitAction.addScancodeKeyControl(gf::Scancode::Escape);
     m_quitAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::Start);
@@ -40,6 +62,22 @@ namespace hg {
 
     if (m_quitAction.isActive()) {
       m_game.pushScene(m_game.quit);
+    }
+
+    if (m_hanzRunLeftAction.isActive()) {
+      m_hanz.setDirection(gf::Direction::Left);
+    } else if (m_hanzRunRightAction.isActive()) {
+      m_hanz.setDirection(gf::Direction::Right);
+    } else {
+      m_hanz.setDirection(gf::Direction::Center);
+    }
+
+    if (m_gretRunLeftAction.isActive()) {
+      m_gret.setDirection(gf::Direction::Left);
+    } else if (m_gretRunRightAction.isActive()) {
+      m_gret.setDirection(gf::Direction::Right);
+    } else {
+      m_gret.setDirection(gf::Direction::Center);
     }
   }
 
