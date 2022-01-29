@@ -4,6 +4,8 @@
 #include <gf/Scene.h>
 #include <gf/Action.h>
 
+#include <SFML/Audio.hpp>
+
 #include "LayerEntity.h"
 #include "HeroEntity.h"
 #include "PhysicsModel.h"
@@ -19,11 +21,17 @@ namespace hg {
 
     void loadLevel(const GameData& data, std::size_t number);
 
+    void stopMusic();
+
   private:
+    void onActivityChange(bool active) override;
     void doHandleActions(gf::Window& window) override;
 
   private:
     GameHub& m_game;
+
+    // Audio
+    sf::Music& m_music;
 
     gf::Action m_quitAction;
 

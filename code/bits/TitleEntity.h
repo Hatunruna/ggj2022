@@ -17,8 +17,6 @@ namespace hg {
   private:
     gf::Font& m_font;
 //     gf::Texture& m_backgroundTexture;
-
-    sf::Music& m_music;
   };
 
 

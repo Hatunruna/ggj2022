@@ -11,9 +11,8 @@ namespace hg {
   TitleEntity::TitleEntity(gf::ResourceManager& resources, AudioManager& audio)
   : m_font(resources.getFont("Underdog.otf"))
 //   , m_backgroundTexture(resources.getTexture("logo.png"))
-  , m_music(audio.getMusic("audio.wav"))
   {
-//     m_music.play();
+
   }
 
   void TitleEntity::update([[maybe_unused]] gf::Time time) {

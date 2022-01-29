@@ -16,6 +16,7 @@ namespace hg {
   LevelScene::LevelScene(GameHub& game)
   : gf::Scene(game.getRenderer().getSize())
   , m_game(game)
+  , m_music(game.audio.getMusic("stage.ogg"))
   , m_quitAction("Quit")
   , m_hanzRunLeftAction("hanzRunLeft")
   , m_hanzRunRightAction("hanzRunRight")
@@ -71,12 +72,33 @@ namespace hg {
     m_game.state.level.loadLevel(data, number);
   }
 
+  void LevelScene::stopMusic() {
+    m_music.stop();
+  }
+
+  void LevelScene::onActivityChange(bool active) {
+    if (active && !isPaused()) {
+      m_music.setLoop(true);
+      m_music.play();m_music.setVolume(100.0f);
+    } else if (!active && isPaused()) {
+      m_music.setVolume(10.0f);
+    } else if (active && isPaused()) {
+      if (m_music.getStatus() == sf::Music::Stopped) {
+        m_music.play();
+      }
+      m_music.setVolume(100.0f);
+    } else {
+      m_music.stop();
+    }
+  }
+
   void LevelScene::doHandleActions([[maybe_unused]] gf::Window& window) {
     if (!isActive()) {
       return;
     }
 
     if (m_quitAction.isActive()) {
+      pause();
       m_game.pushScene(m_game.quit);
     }
 

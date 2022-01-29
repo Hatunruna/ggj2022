@@ -16,7 +16,6 @@ namespace hg {
     void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
   private:
     gf::Font& m_font;
-    sf::Music& m_music;
   };
 
 

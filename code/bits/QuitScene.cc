@@ -47,7 +47,12 @@ namespace hg {
     };
 
     setupButton(m_resumeButton, [&] () {gf::Log::debug("Resume button pressed!\n"); m_game.popScene(); });
-    setupButton(m_quitButton, [&] () {gf::Log::debug("Quit button pressed!\n"); m_game.replaceAllScenes(m_game.start); });
+    setupButton(m_quitButton, [&] () {
+      gf::Log::debug("Quit button pressed!\n");
+      m_game.replaceAllScenes(m_game.start);
+      // TODO: dirty hack
+      m_game.level.stopMusic();
+    });
   }
 
   void QuitScene::doProcessEvent(gf::Event& event) {
