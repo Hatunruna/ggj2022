@@ -20,6 +20,8 @@ namespace hg {
     void doHandleActions(gf::Window& window) override;
     void doRender(gf::RenderTarget& target, const gf::RenderStates &states) override;
 
+    void doShow() override;
+
   private:
     GameHub& m_game;
 

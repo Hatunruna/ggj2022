@@ -107,4 +107,11 @@ namespace hg {
     m_widgets.render(target, states);
   }
 
+  void QuitScene::doShow() {
+    m_widgets.clear();
+    m_widgets.addWidget(m_resumeButton);
+    m_widgets.addWidget(m_quitButton);
+    m_widgets.selectNextWidget();
+  }
+
 }
