@@ -28,17 +28,16 @@ namespace hg {
     addAction(m_downAction);
 
     m_triggerAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::A);
-    m_triggerAction.addScancodeKeyControl(gf::Scancode::Return);
     m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
     addAction(m_triggerAction);
 
     auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
       button.setDefaultTextColor(gf::Color::Black);
       button.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
-      button.setSelectedTextColor(gf::Color::Orange);
-      button.setSelectedBackgroundColor(gf::Color::Gray(0.7f));
-      button.setDisabledTextColor(gf::Color::Red);
-      button.setDisabledBackgroundColor(gf::Color::Gray(0.7f));
+      button.setSelectedTextColor(gf::Color::Black);
+      button.setSelectedBackgroundColor(gf::Color::Green);
+      button.setDisabledTextColor(gf::Color::Black);
+      button.setDisabledBackgroundColor(gf::Color::Red);
       button.setAnchor(gf::Anchor::TopLeft);
       button.setAlignment(gf::Alignment::Center);
       button.setCallback(callback);
@@ -53,11 +52,7 @@ namespace hg {
     switch (event.type)
     {
       case gf::EventType::MouseMoved:
-        //m_widgets.pointTo(rend.mapPixelToCoords(event.mouseCursor.coords));
-        break;
-
-      case gf::EventType::MouseButtonPressed:
-        //m_widgets.pointTo(renderer.mapPixelToCoords(event.mouseButton.coords));
+        m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
         break;
     }
   }
