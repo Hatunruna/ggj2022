@@ -39,7 +39,6 @@ add_executable(${GAME}
   code/bits/MenuTitleEntity.cc
   code/bits/QuitScene.cc
   code/bits/LevelState.cc
-  code/bits/PlatformState.cc
 )
 
 target_include_directories(${GAME}

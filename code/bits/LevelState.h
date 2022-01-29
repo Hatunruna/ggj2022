@@ -3,9 +3,13 @@
 
 #include <vector>
 
-#include "PlatformState.h"
+#include "Hero.h"
 
 namespace hg {
+
+  struct PlatformState {
+    HeroColor color; 
+  };
 
   struct LevelState {
     std::vector<PlatformState> platforms;

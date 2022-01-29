@@ -6,6 +6,12 @@ namespace hg {
     Hanz, // red
     Gret, // blue
   };
+
+  enum class HeroColor {
+    RED,
+    BLUE,
+    NEUTRAL,
+  };
 }
 
 #endif // HG_HERO_H
