@@ -1,5 +1,9 @@
 #include "LevelData.h"
 
+#include <cassert>
+
+#include <gf/Log.h>
+
 #include "Constants.h"
 
 namespace hg {
@@ -42,18 +46,45 @@ namespace hg {
           gid = gid - tileset->firstGid;
 
           assert(m_data.tiles.isValid(gf::vec(i, j)));
-          assert(m_data.tiles(gf::vec(i, j)) == PlatformData::None);
-          m_data.tiles(gf::vec(i, j)) = static_cast<PlatformData>(gid);
+          assert(m_data.tiles(gf::vec(i, j)) == PlatformType::None);
+          m_data.tiles(gf::vec(i, j)) = static_cast<PlatformType>(gid);
         }
       }
 
     private:
       LevelData& m_data;
     };
+
+    PlatformData makeHorizontalPlatform(const gf::Array2D<PlatformType, int>& tiles, gf::Vector2i start, PlatformType end, PlatformType type) {
+      PlatformData platform;
+      platform.type == type;
+      platform.segment.p0 = platform.segment.p1 = start;
+
+      while (tiles(platform.segment.p1) != end) {
+        ++platform.segment.p1.x;
+        assert(tiles.isValid(platform.segment.p1));
+      }
+
+      return platform;
+    }
+
+    PlatformData makeVerticalPlatform(const gf::Array2D<PlatformType, int>& tiles, gf::Vector2i start, PlatformType end, PlatformType type) {
+      PlatformData platform;
+      platform.type == type;
+      platform.segment.p0 = platform.segment.p1 = start;
+
+      while (tiles(platform.segment.p1) != end) {
+        ++platform.segment.p1.y;
+        assert(tiles.isValid(platform.segment.p1));
+      }
+
+      return platform;
+    }
+
   }
 
   LevelData::LevelData()
-  : tiles(LevelSize, PlatformData::None)
+  : tiles(LevelSize, PlatformType::None)
   {
   }
 
@@ -62,7 +93,30 @@ namespace hg {
     LayersDataMaker maker(data);
     tmx.visitLayers(maker);
 
+    for (auto position : data.tiles.getPositionRange()) {
+      switch (data.tiles(position)) {
+        case PlatformType::Neutral_HL:
+          data.platforms.push_back(makeHorizontalPlatform(data.tiles, position, PlatformType::Neutral_HR, PlatformType::Neutral_H));
+          break;
+        case PlatformType::Red_HL:
+          data.platforms.push_back(makeHorizontalPlatform(data.tiles, position, PlatformType::Red_HR, PlatformType::Red_H));
+          break;
+        case PlatformType::Blue_HL:
+          data.platforms.push_back(makeHorizontalPlatform(data.tiles, position, PlatformType::Blue_HR, PlatformType::Blue_H));
+          break;
+        case PlatformType::Neutral_VU:
+          data.platforms.push_back(makeVerticalPlatform(data.tiles, position, PlatformType::Neutral_VD, PlatformType::Neutral_V));
+          break;
+        case PlatformType::Red_VU:
+          data.platforms.push_back(makeVerticalPlatform(data.tiles, position, PlatformType::Red_VD, PlatformType::Red_V));
+          break;
+        case PlatformType::Blue_VU:
+          data.platforms.push_back(makeVerticalPlatform(data.tiles, position, PlatformType::Blue_VD, PlatformType::Blue_V));
+          break;
+      }
+    }
 
+    gf::Log::debug("Number of platforms: %zu\n", data.platforms.size());
 
     return data;
   }

@@ -8,7 +8,7 @@
 #include <gf/Tmx.h>
 
 namespace hg {
-  enum class PlatformData {
+  enum class PlatformType {
     None        = -1,
 
     Neutral_HL  = 0,
@@ -44,11 +44,17 @@ namespace hg {
     Limit_C     = 26,
   };
 
+  struct PlatformData {
+    PlatformType type;
+    gf::SegmentI segment;
+  };
+
   struct LevelData {
     LevelData();
 
-    gf::Array2D<PlatformData, int> tiles;
-    std::vector<gf::SegmentI> platforms;
+    gf::Array2D<PlatformType, int> tiles;
+    std::vector<PlatformData> platforms;
+    std::vector<gf::SegmentI> limits;
 
     static LevelData makeFromTmx(const gf::TmxLayers& tmx);
   };
