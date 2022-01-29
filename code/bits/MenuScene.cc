@@ -20,6 +20,7 @@ namespace hg {
     setClearColor(gf::Color::Black);
     addHudEntity(m_menuTitleEntity);
 
+    m_quitAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::B);
     m_quitAction.addKeycodeKeyControl(gf::Keycode::Escape);
     addAction(m_quitAction);
 
@@ -110,8 +111,13 @@ namespace hg {
 
   void MenuScene::doShow() {
     m_widgets.clear();
+
+    m_tutoButton.setDefault();
     m_widgets.addWidget(m_tutoButton);
+
+    m_level1.setDefault();
     m_widgets.addWidget(m_level1);
+    
     m_widgets.selectNextWidget();
   }
 

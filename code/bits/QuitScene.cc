@@ -109,8 +109,13 @@ namespace hg {
 
   void QuitScene::doShow() {
     m_widgets.clear();
+
+    m_resumeButton.setDefault();
     m_widgets.addWidget(m_resumeButton);
+
+    m_quitButton.setDefault();
     m_widgets.addWidget(m_quitButton);
+
     m_widgets.selectNextWidget();
   }
 
