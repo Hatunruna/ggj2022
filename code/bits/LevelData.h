@@ -5,7 +5,7 @@
 
 #include <gf/Array2D.h>
 #include <gf/GeometryTypes.h>
-#include <gf/TileLayer.h>
+#include <gf/Tmx.h>
 
 namespace hg {
   enum class PlatformData {
@@ -19,6 +19,8 @@ namespace hg {
     Neutral_VD  = 5,
     Neutral_C   = 6,
 
+    Button      = 7,
+
     Red_HL      = 8,
     Red_H       = 9,
     Red_HR      = 10,
@@ -26,6 +28,7 @@ namespace hg {
     Red_V       = 12,
     Red_VD      = 13,
     Red_C       = 14,
+    Red_Start   = 15,
 
     Blue_HL     = 16,
     Blue_H      = 17,
@@ -34,6 +37,7 @@ namespace hg {
     Blue_V      = 20,
     Blue_VD     = 21,
     Blue_C      = 22,
+    Blue_Start  = 23,
 
     Limit_H     = 24,
     Limit_V     = 25,
@@ -45,7 +49,8 @@ namespace hg {
 
     gf::Array2D<PlatformData, int> tiles;
     std::vector<gf::SegmentI> platforms;
-    std::vector<gf::TileLayer> layers;
+
+    static LevelData makeFromTmx(const gf::TmxLayers& tmx);
   };
 
 }

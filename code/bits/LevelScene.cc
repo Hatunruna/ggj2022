@@ -16,7 +16,9 @@ namespace hg {
   : gf::Scene(game.getRenderer().getSize())
   , m_game(game)
   , m_quitAction("Quit")
-  , m_layer(game.resources)
+  , m_layer(game.scenery, game.state)
+  , m_hanz(game.resources, game.audio, HeroColor::Red, WorldSize * 0.2f)
+  , m_gret(game.resources, game.audio, HeroColor::Blue, WorldSize * 0.8f)
   {
     setWorldViewCenter(WorldSize / 2);
     setWorldViewSize(WorldSize);
@@ -27,6 +29,8 @@ namespace hg {
     addAction(m_quitAction);
 
     addWorldEntity(m_layer);
+    addWorldEntity(m_hanz);
+    addWorldEntity(m_gret);
   }
 
   void LevelScene::doHandleActions([[maybe_unused]] gf::Window& window) {

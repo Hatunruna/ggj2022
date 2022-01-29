@@ -10,6 +10,8 @@ namespace hg {
   struct GameState {
     static constexpr uint16_t Version = 1;
 
+    std::size_t level = 0;
+
     void loadFromFile(const gf::Path& filename);
     void saveToFile(const gf::Path& filename);
   };
