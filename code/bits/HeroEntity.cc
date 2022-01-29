@@ -8,7 +8,9 @@
 namespace hg {
 
   namespace {
-    const gf::Texture& getHeroTexture(gf::ResourceManager& resources, const std::string& textureName, HeroColor color) {
+    constexpr float TextureScale = 64.0f / 256.0f;
+
+    gf::Texture& getHeroTexture(gf::ResourceManager& resources, const std::string& textureName, HeroColor color) {
       std::string dir;
       switch(color) {
       case HeroColor::Red:
@@ -33,6 +35,10 @@ namespace hg {
   , m_facedDirection(gf::Direction::Left)
   , m_moveDirection(gf::Direction::Center)
   {
+    // Smoothing textures
+    m_pauseTexture.setSmooth();
+    m_runTexture.setSmooth();
+
     // Load animation
     m_runAnimation.addTileset(m_runTexture, gf::vec(4, 3), gf::seconds(1.0f / 25.0f), 12);
   }
@@ -60,7 +66,9 @@ namespace hg {
       sprite.setAnchor(gf::Anchor::Center);
       sprite.setPosition(m_position);
       if (invert) {
-        sprite.setScale(gf::vec(-1.0f, 1.0f));
+        sprite.setScale(gf::vec(-TextureScale, TextureScale));
+      } else {
+        sprite.setScale(TextureScale);
       }
       target.draw(sprite, states);
     };
@@ -72,7 +80,9 @@ namespace hg {
       sprite.setAnchor(gf::Anchor::Center);
       sprite.setPosition(m_position);
       if (m_facedDirection == gf::Direction::Right) {
-        sprite.setScale(gf::vec(-1.0f, 1.0f));
+        sprite.setScale(gf::vec(-TextureScale, TextureScale));
+      } else {
+        sprite.setScale(TextureScale);
       }
       target.draw(sprite, states);
       break;

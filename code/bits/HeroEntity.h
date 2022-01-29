@@ -29,8 +29,8 @@ namespace hg {
     gf::Vector2f m_position;
 
     // Graphics
-    const gf::Texture& m_pauseTexture;
-    const gf::Texture& m_runTexture;
+    gf::Texture& m_pauseTexture;
+    gf::Texture& m_runTexture;
     gf::Animation m_runAnimation;
 
     // Actions
