@@ -16,7 +16,7 @@ namespace hg {
   : gf::Scene(game.getRenderer().getSize())
   , m_game(game)
   , m_quitAction("Quit")
-  , m_layer(game.resources)
+  , m_layer(game.data, game.state)
   {
     setWorldViewCenter(WorldSize / 2);
     setWorldViewSize(WorldSize);
