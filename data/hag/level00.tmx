@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="1">
  <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32" spacing="2" margin="1" tilecount="64" columns="8">
   <image source="tileset.png" width="272" height="272"/>
  </tileset>
- <layer id="1" name="level" width="32" height="32">
+ <layer id="3" name="lift" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJzt17EKgDAMRdGokzqpqNj+/38acSsWoZbE4T64a8/QKVFEDqeiFsRvAR8fHx8fHx//wyZtzrQY+CXDv0v/bjf2062V3m+09qHOyH8bfj2/14ZMo4Ffsr/6m6F/3cCe9/cJZ/kOVg==
+   eJztzUENADAIBLAztOHfHRL2JGGtgSYAe9Twf/x+/7f/Hf4B4KUB3L0Bxg==
+  </data>
+ </layer>
+ <layer id="2" name="cables" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzt0LEJACEURMHfioqJ9t+fBoLhXSIGzsDGDzYCAACAP/pcXisX+vVC83Q/xf70a+1A/yUDXCQCfA==
+  </data>
+ </layer>
+ <layer id="1" name="platforms" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzt1zkOgDAMRFEDFVCxi+T+98S0ERZSCOMUM9Jv8wpXiSJyOhW1IH4L9OnTp0+fPn36HzZps9EC8HNWq7+C/fR2h9g3+8NPtxV6v9HahzqQ/zb65fxeG4xGgJ+zWv0d6N9/YM//9wUxsA59
   </data>
  </layer>
 </map>

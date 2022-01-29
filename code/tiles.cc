@@ -1,12 +1,16 @@
+#include <cassert>
+
 #include <gf/Color.h>
+#include <gf/Direction.h>
 #include <gf/Image.h>
 
-constexpr int Size = 34;
-constexpr int Mid = 17;
-constexpr int Lo = 9;
-constexpr int Hi = 25;
 
 namespace {
+  constexpr int Size = 34;
+  constexpr int Mid = 17;
+  constexpr int Lo = 9;
+  constexpr int Hi = 25;
+  constexpr int Gap = 5;
 
   gf::Image makeBase() {
     return gf::Image(gf::vec(Size, Size), gf::Color::toRgba32(gf::Color::Transparent));
@@ -102,6 +106,174 @@ namespace {
     image.saveToFile(path); // cross
   }
 
+
+  void makeCableStraightHorizontal(gf::Color4f color, gf::Path path) {
+    gf::Image image = makeBase();
+
+    for (int i = 0; i < Size; ++i) {
+      for (int j = Mid - 1; j < Mid + 1; ++j) {
+        image.setPixel(gf::vec(i, j), gf::Color::toRgba32(color));
+      }
+    }
+
+    image.saveToFile(path);
+  }
+
+  void makeCableStraightHorizontalRight(gf::Color4f color, gf::Path path) {
+    gf::Image image = makeBase();
+
+    for (int i = 0; i < Mid; ++i) {
+      for (int j = Mid - 1; j < Mid + 1; ++j) {
+        image.setPixel(gf::vec(i, j), gf::Color::toRgba32(color));
+      }
+    }
+
+    image.saveToFile(path);
+  }
+
+  void makeCableStraightHorizontalLeft(gf::Color4f color, gf::Path path) {
+    gf::Image image = makeBase();
+
+    for (int i = Mid; i < Size; ++i) {
+      for (int j = Mid - 1; j < Mid + 1; ++j) {
+        image.setPixel(gf::vec(i, j), gf::Color::toRgba32(color));
+      }
+    }
+
+    image.saveToFile(path);
+  }
+
+  void makeCableStraightVertical(gf::Color4f color, gf::Path path) {
+    gf::Image image = makeBase();
+
+    for (int i = Mid - 1; i < Mid + 1; ++i) {
+      for (int j = 0; j < Size; ++j) {
+        image.setPixel(gf::vec(i, j), gf::Color::toRgba32(color));
+      }
+    }
+
+    image.saveToFile(path);
+  }
+
+  void makeCableStraightVerticalDown(gf::Color4f color, gf::Path path) {
+    gf::Image image = makeBase();
+
+    for (int i = Mid - 1; i < Mid + 1; ++i) {
+      for (int j = 0; j < Mid; ++j) {
+        image.setPixel(gf::vec(i, j), gf::Color::toRgba32(color));
+      }
+    }
+
+    image.saveToFile(path);
+  }
+
+  void makeCableStraightVerticalUp(gf::Color4f color, gf::Path path) {
+    gf::Image image = makeBase();
+
+    for (int i = Mid - 1; i < Mid + 1; ++i) {
+      for (int j = Mid; j < Size; ++j) {
+        image.setPixel(gf::vec(i, j), gf::Color::toRgba32(color));
+      }
+    }
+
+    image.saveToFile(path);
+  }
+
+  void makeCableCross(gf::Color4f color, gf::Path path) {
+    gf::Image image = makeBase();
+
+    for (int i = 0; i < Size; ++i) {
+      for (int j = Mid - 1; j < Mid + 1; ++j) {
+        image.setPixel(gf::vec(i, j), gf::Color::toRgba32(color));
+      }
+    }
+
+    for (int i = Mid - 1; i < Mid + 1; ++i) {
+      for (int j = 0; j < Size; ++j) {
+        image.setPixel(gf::vec(i, j), gf::Color::toRgba32(color));
+      }
+    }
+
+    image.saveToFile(path);
+  }
+
+  void makeCableTurn(gf::Color4f color, gf::Direction from, gf::Direction to, gf::Path path) {
+    gf::Image image = makeBase();
+
+    if (from == gf::Direction:: Left) {
+      for (int i = 0; i < Mid + 1; ++i) {
+        for (int j = Mid - 1; j < Mid + 1; ++j) {
+          image.setPixel(gf::vec(i, j), gf::Color::toRgba32(color));
+        }
+      }
+    } else {
+      assert(from == gf::Direction::Right);
+
+      for (int i = Mid - 1; i < Size; ++i) {
+        for (int j = Mid - 1; j < Mid + 1; ++j) {
+          image.setPixel(gf::vec(i, j), gf::Color::toRgba32(color));
+        }
+      }
+    }
+
+    if (to == gf::Direction::Down) {
+      for (int i = Mid - 1; i < Mid + 1; ++i) {
+        for (int j = Mid - 1; j < Size; ++j) {
+          image.setPixel(gf::vec(i, j), gf::Color::toRgba32(color));
+        }
+      }
+    } else {
+      assert(to == gf::Direction::Up);
+
+      for (int i = Mid - 1; i < Mid + 1; ++i) {
+        for (int j = 0; j < Mid + 1; ++j) {
+          image.setPixel(gf::vec(i, j), gf::Color::toRgba32(color));
+        }
+      }
+    }
+
+    image.saveToFile(path);
+  }
+
+  void makeDoubleCableFull(gf::Color4f color, gf::Path path) {
+    gf::Image image = makeBase();
+
+    for (int i = Mid - 1; i < Mid + 1; ++i) {
+      for (int j = 0; j < Size; ++j) {
+        image.setPixel(gf::vec(i - Gap, j), gf::Color::toRgba32(color));
+        image.setPixel(gf::vec(i + Gap, j), gf::Color::toRgba32(color));
+      }
+    }
+
+    image.saveToFile(path);
+  }
+
+  void makeDoubleCableUp(gf::Color4f color, gf::Path path) {
+    gf::Image image = makeBase();
+
+    for (int i = Mid - 1; i < Mid + 1; ++i) {
+      for (int j = Mid; j < Size; ++j) {
+        image.setPixel(gf::vec(i - Gap, j), gf::Color::toRgba32(color));
+        image.setPixel(gf::vec(i + Gap, j), gf::Color::toRgba32(color));
+      }
+    }
+
+    image.saveToFile(path);
+  }
+
+  void makeDoubleCableDown(gf::Color4f color, gf::Path path) {
+    gf::Image image = makeBase();
+
+    for (int i = Mid - 1; i < Mid + 1; ++i) {
+      for (int j = 0; j < Mid; ++j) {
+        image.setPixel(gf::vec(i - Gap, j), gf::Color::toRgba32(color));
+        image.setPixel(gf::vec(i + Gap, j), gf::Color::toRgba32(color));
+      }
+    }
+
+    image.saveToFile(path);
+  }
+
 }
 
 
@@ -156,5 +328,36 @@ int main() {
   makeHorizontal(gf::Color::Gray(), "24-limit_H.png");
   makeVertical(gf::Color::Gray(), "25-limit_V.png");
   makeCross(gf::Color::Gray(), "26-limit_C.png");
+
+  base.saveToFile("27-empty.png");
+  base.saveToFile("28-empty.png");
+  base.saveToFile("29-empty.png");
+  base.saveToFile("30-empty.png");
+  base.saveToFile("31-empty.png");
+
+  // cables
+
+  makeCableStraightHorizontalLeft(gf::Color::Gray(0.75f), "32-cable_straight_HL.png");
+  makeCableStraightHorizontal(gf::Color::Gray(0.75f), "33-cable_straight_H.png");
+  makeCableStraightHorizontalRight(gf::Color::Gray(0.75f), "34-cable_straight_HR.png");
+  makeCableStraightVerticalUp(gf::Color::Gray(0.75f), "35-cable_straight_VU.png");
+  makeCableStraightVertical(gf::Color::Gray(0.75f), "36-cable_straight_V.png");
+  makeCableStraightVerticalDown(gf::Color::Gray(0.75f), "37-cable_straight_VD.png");
+  makeCableCross(gf::Color::Gray(0.75f), "38-cable_cross.png");
+
+  base.saveToFile("39-empty.png");
+
+  makeCableTurn(gf::Color::Gray(0.75f), gf::Direction::Left, gf::Direction::Down, "40-cable_turn_LD.png");
+  makeCableTurn(gf::Color::Gray(0.75f), gf::Direction::Left, gf::Direction::Up, "41-cable_turn_LU.png");
+  makeCableTurn(gf::Color::Gray(0.75f), gf::Direction::Right, gf::Direction::Down, "42-cable_turn_RD.png");
+  makeCableTurn(gf::Color::Gray(0.75f), gf::Direction::Right, gf::Direction::Up, "43-cable_turn_RU.png");
+
+  // double cable
+
+  makeDoubleCableFull(gf::Color::Gray(0.25f), "44-double_cable_V.png");
+  makeDoubleCableDown(gf::Color::Gray(0.25f), "45-double_cable_D.png");
+  makeDoubleCableUp(gf::Color::Gray(0.25f), "46-double_cable_U.png");
+
+  base.saveToFile("47-empty.png");
 
 }
