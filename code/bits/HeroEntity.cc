@@ -63,7 +63,10 @@ namespace hg {
   void HeroEntity::setDirection(gf::Direction direction) {
     switch(m_state) {
     case HeroState::Pause:
-      if (direction == gf::Direction::Left || direction == gf::Direction::Right) {
+      if (!m_physics.isColliding(m_hero)) {
+        m_fallAnimation.reset();
+        m_state = HeroState::Fall;
+      } else if (direction == gf::Direction::Left || direction == gf::Direction::Right) {
         m_moveDirection = direction;
         m_facedDirection = direction;
 
@@ -74,7 +77,10 @@ namespace hg {
       break;
 
     case HeroState::Run:
-      if (direction == gf::Direction::Left || direction == gf::Direction::Right) {
+      if (!m_physics.isColliding(m_hero)) {
+        m_fallAnimation.reset();
+        m_state = HeroState::Fall;
+      } else if (direction == gf::Direction::Left || direction == gf::Direction::Right) {
         m_moveDirection = direction;
         m_facedDirection = direction;
       } else if (direction == gf::Direction::Center) {
@@ -83,7 +89,6 @@ namespace hg {
         m_state = HeroState::Pause;
         m_runAnimation.reset();
       }
-      // TODO: handle fall
       // TODO: activate
 
       break;
