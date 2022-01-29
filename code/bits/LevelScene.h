@@ -35,6 +35,7 @@ namespace hg {
     // Gret actions
     gf::Action m_gretRunLeftAction;
     gf::Action m_gretRunRightAction;
+    gf::Action m_gretJumpAction;
 
     PhysicsModel m_physics;
 

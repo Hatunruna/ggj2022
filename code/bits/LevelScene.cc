@@ -22,6 +22,7 @@ namespace hg {
   , m_hanzJumpAction("hanzJump")
   , m_gretRunLeftAction("gretRunLeft")
   , m_gretRunRightAction("gretRunRight")
+  , m_gretJumpAction("gretJump")
   , m_layer(game.scenery, game.state)
   , m_hanz(game.resources, m_physics, game.audio, Hero::Hanz)
   , m_gret(game.resources, m_physics, game.audio, Hero::Gret)
@@ -51,6 +52,9 @@ namespace hg {
     m_gretRunRightAction.addScancodeKeyControl(gf::Scancode::D);
     addAction(m_gretRunRightAction);
 
+    m_gretJumpAction.addScancodeKeyControl(gf::Scancode::Space);
+    addAction(m_gretJumpAction);
+
     m_quitAction.addScancodeKeyControl(gf::Scancode::Escape);
     m_quitAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::Start);
     addAction(m_quitAction);
@@ -70,7 +74,7 @@ namespace hg {
 
     for (auto & platform : level.platforms) {
       PlatformState state;
-      
+
       switch (platform.type)
       {
         case PlatformType::Neutral_H:
@@ -111,6 +115,10 @@ namespace hg {
       m_hanz.setDirection(gf::Direction::Right);
     } else {
       m_hanz.setDirection(gf::Direction::Center);
+    }
+
+    if (m_gretJumpAction.isActive()) {
+      m_gret.jump();
     }
 
     if (m_gretRunLeftAction.isActive()) {
