@@ -36,6 +36,7 @@ namespace hg {
   , m_pauseTexture(getHeroTexture(resources, "pause.png", hero))
   , m_runTexture(getHeroTexture(resources, "run.png", hero))
   , m_jumpTexture(getHeroTexture(resources, "jump.png", hero))
+  , m_fallTexture(getHeroTexture(resources, "fall.png", hero))
   , m_facedDirection(gf::Direction::Left)
   , m_moveDirection(gf::Direction::Center)
   {
@@ -43,11 +44,14 @@ namespace hg {
     m_pauseTexture.setSmooth();
     m_runTexture.setSmooth();
     m_jumpTexture.setSmooth();
+    m_fallTexture.setSmooth();
 
     // Load animation
     m_runAnimation.addTileset(m_runTexture, gf::vec(4, 3), gf::seconds(1.0f / 25.0f), 12);
     m_jumpAnimation.addTileset(m_jumpTexture, gf::vec(3, 3), gf::seconds(1.0f / 25.0f), 7);
     m_jumpAnimation.setLoop(false);
+    m_fallAnimation.addTileset(m_fallTexture, gf::vec(3, 3), gf::seconds(1.0f / 25.0f), 6);
+    m_fallAnimation.setLoop(false);
   }
 
   void HeroEntity::setDirection(gf::Direction direction) {
@@ -81,11 +85,18 @@ namespace hg {
       break;
 
     case HeroState::Jump:
+    case HeroState::Fall:
+    {
+        gf::Vector2f heroVelocity = m_physics.getVelocity(m_hero);
+        if (heroVelocity.x > 0.0) {
+          m_facedDirection = gf::Direction::Right;
+        } else if (heroVelocity.x < 0.0f) {
+          m_facedDirection = gf::Direction::Left;
+        }
+      }
       break;
 
     default:
-      // TODO: jump
-      // TODO: fall
       // TODO: land
       // TODO: activate
       assert(false);
@@ -101,6 +112,7 @@ namespace hg {
       gf::Log::debug("jump state OK\n");
       if (m_physics.jump(m_hero)) {
         gf::Log::debug("jump triggered\n");
+        m_jumpAnimation.reset();
         m_state = HeroState::Jump;
       }
     }
@@ -113,7 +125,12 @@ namespace hg {
       break;
 
     case HeroState::Jump:
-      m_jumpAnimation.update(time);
+      if (m_physics.isColliding(m_hero) || m_physics.getVelocity(m_hero).y > 0.0f) {
+        m_fallAnimation.reset();
+        m_state = HeroState::Fall;
+      } else {
+        m_jumpAnimation.update(time);
+      }
 
       break;
     }
@@ -157,6 +174,10 @@ namespace hg {
 
     case HeroState::Jump:
       drawAnimation(m_jumpAnimation, m_facedDirection == gf::Direction::Right);
+      break;
+
+    case HeroState::Fall:
+      drawAnimation(m_fallAnimation, m_facedDirection == gf::Direction::Right);
       break;
 
     default:
