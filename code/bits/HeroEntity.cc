@@ -69,7 +69,6 @@ namespace hg {
 
         m_state = HeroState::Run;
       }
-      // TODO: handle jump
       // TODO: activate
 
       break;
@@ -84,7 +83,6 @@ namespace hg {
         m_state = HeroState::Pause;
         m_runAnimation.reset();
       }
-      // TODO: handle jump
       // TODO: handle fall
       // TODO: activate
 
@@ -107,7 +105,6 @@ namespace hg {
       break;
 
     default:
-      // TODO: land
       // TODO: activate
       assert(false);
       break;
@@ -132,6 +129,10 @@ namespace hg {
     auto heroVelocity = m_physics.getVelocity(m_hero);
 
     switch (m_state) {
+    case HeroState::Pause:
+      // Nothing
+      break;
+
     case HeroState::Run:
       m_runAnimation.update(time);
       break;
@@ -148,7 +149,6 @@ namespace hg {
 
     case HeroState::Fall:
       if (heroVelocity.y <= 0.0f) {
-        gf::Log::debug("Landed\n");
         m_state = HeroState::Land;
         m_elapsedTime = gf::seconds(0.0f);
       }
@@ -160,8 +160,12 @@ namespace hg {
 
       if (m_elapsedTime > LandTotalTimeAnimaion) {
         m_state = HeroState::Pause;
-        gf::Log::debug("end land\n");
       }
+      break;
+
+    default:
+      assert(false);
+      break;
     }
   }
 
