@@ -24,15 +24,20 @@ add_executable(${GAME}
   code/bits/Constants.cc
   code/bits/GameData.cc
   code/bits/GameHub.cc
+  code/bits/GameRaw.cc
+  code/bits/GameScenery.cc
   code/bits/GameState.cc
+  code/bits/HeroEntity.cc
   code/bits/LayerEntity.cc
   code/bits/LevelData.cc
   code/bits/LevelScene.cc
+  code/bits/LevelScenery.cc
   code/bits/StartScene.cc
   code/bits/TitleEntity.cc
   code/bits/MenuScene.cc
   code/bits/MenuTitleEntity.cc
   code/bits/LevelSelectorEntity.cc
+  code/bits/QuitScene.cc
 )
 
 target_include_directories(${GAME}

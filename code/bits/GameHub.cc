@@ -7,10 +7,13 @@ namespace hg {
   GameHub::GameHub()
   : GameManager("Hanz and Gret", { GAME_DATADIR })
   , audio({ GAME_DATADIR })
-  , data(resources)
+  , raw(resources)
+  , data(raw.levels)
+  , scenery(resources, raw.levels)
   , start(*this)
   , level(*this)
   , menu(*this)
+  , quit(*this)
   {
     pushScene(start);
   }

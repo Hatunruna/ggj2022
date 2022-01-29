@@ -5,6 +5,7 @@
 #include <gf/Action.h>
 
 #include "LayerEntity.h"
+#include "HeroEntity.h"
 
 namespace hg {
 
@@ -23,6 +24,8 @@ namespace hg {
     gf::Action m_quitAction;
 
     LayerEntity m_layer;
+    HeroEntity m_hanz; // red
+    HeroEntity m_gret; // blue
   };
 
 }

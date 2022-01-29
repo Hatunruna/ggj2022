@@ -5,10 +5,13 @@
 
 #include "AudioManager.h"
 #include "GameData.h"
+#include "GameRaw.h"
+#include "GameScenery.h"
 #include "GameState.h"
 #include "LevelScene.h"
 #include "StartScene.h"
 #include "MenuScene.h"
+#include "QuitScene.h"
 
 namespace hg {
 
@@ -17,12 +20,15 @@ namespace hg {
 
     AudioManager audio;
 
+    GameRaw raw;
     GameData data;
+    GameScenery scenery;
     GameState state;
 
     StartScene start;
     MenuScene menu;
     LevelScene level;
+    QuitScene quit;
 
 
   };
