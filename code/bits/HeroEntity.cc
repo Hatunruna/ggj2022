@@ -146,7 +146,11 @@ namespace hg {
       if (heroVelocity.y > 0.0f) {
         m_fallAnimation.reset();
         m_state = HeroState::Fall;
-      } else {
+      } else if (heroVelocity.y == 0.0f) {
+        m_state = HeroState::Land;
+        m_landAnimation.reset();
+        m_elapsedTime = gf::seconds(0.0f);
+      }else {
         m_jumpAnimation.update(time);
       }
 
@@ -155,6 +159,7 @@ namespace hg {
     case HeroState::Fall:
       if (heroVelocity.y <= 0.0f) {
         m_state = HeroState::Land;
+        m_landAnimation.reset();
         m_elapsedTime = gf::seconds(0.0f);
       }
       break;
