@@ -23,6 +23,14 @@ namespace hg {
 
     gf::Action m_quitAction;
 
+    // Hanz actions
+    gf::Action m_hanzRunLeftAction;
+    gf::Action m_hanzRunRightAction;
+
+    // Gret actions
+    gf::Action m_gretRunLeftAction;
+    gf::Action m_gretRunRightAction;
+
     LayerEntity m_layer;
     HeroEntity m_hanz; // red
     HeroEntity m_gret; // blue
