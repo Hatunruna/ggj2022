@@ -10,14 +10,14 @@ namespace hg {
   namespace {
     constexpr float TextureScale = 64.0f / 256.0f;
 
-    gf::Texture& getHeroTexture(gf::ResourceManager& resources, const std::string& textureName, HeroColor color) {
+    gf::Texture& getHeroTexture(gf::ResourceManager& resources, const std::string& textureName, Hero hero) {
       std::string dir;
-      switch(color) {
-      case HeroColor::Red:
+      switch(hero) {
+      case Hero::Hanz:
         dir = "hanz/";
         break;
 
-      case HeroColor::Blue:
+      case Hero::Gret:
         dir = "gret/";
         break;
       }
@@ -27,11 +27,11 @@ namespace hg {
   }
 
 
-  HeroEntity::HeroEntity(gf::ResourceManager& resources, AudioManager& audio, HeroColor color, gf::Vector2f position)
-  : m_color(color)
+  HeroEntity::HeroEntity(gf::ResourceManager& resources, AudioManager& audio, Hero hero, gf::Vector2f position)
+  : m_hero(hero)
   , m_position(position)
-  , m_pauseTexture(getHeroTexture(resources, "pause.png", color))
-  , m_runTexture(getHeroTexture(resources, "run.png", color))
+  , m_pauseTexture(getHeroTexture(resources, "pause.png", hero))
+  , m_runTexture(getHeroTexture(resources, "run.png", hero))
   , m_facedDirection(gf::Direction::Left)
   , m_moveDirection(gf::Direction::Center)
   {

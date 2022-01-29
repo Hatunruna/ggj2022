@@ -7,16 +7,12 @@
 #include <gf/ResourceManager.h>
 
 #include "AudioManager.h"
+#include "Hero.h"
 
 namespace hg {
-  enum class HeroColor {
-    Blue,
-    Red,
-  };
-
   class HeroEntity : public gf::Entity {
   public:
-    HeroEntity(gf::ResourceManager& resources, AudioManager& audio, HeroColor color, gf::Vector2f position);
+    HeroEntity(gf::ResourceManager& resources, AudioManager& audio, Hero hero, gf::Vector2f position);
 
     void setDirection(gf::Direction direction);
 
@@ -25,7 +21,7 @@ namespace hg {
 
   private:
     // State
-    const HeroColor m_color;
+    const Hero m_hero;
     gf::Vector2f m_position;
 
     // Graphics

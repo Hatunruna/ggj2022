@@ -21,8 +21,8 @@ namespace hg {
   , m_gretRunLeftAction("gretRunLeft")
   , m_gretRunRightAction("gretRunRight")
   , m_layer(game.scenery, game.state)
-  , m_hanz(game.resources, game.audio, HeroColor::Red, WorldSize * 0.2f)
-  , m_gret(game.resources, game.audio, HeroColor::Blue, WorldSize * 0.8f)
+  , m_hanz(game.resources, game.audio, Hero::Hanz, WorldSize * 0.2f)
+  , m_gret(game.resources, game.audio, Hero::Gret, WorldSize * 0.8f)
   {
     setWorldViewCenter(WorldSize / 2);
     setWorldViewSize(WorldSize);
