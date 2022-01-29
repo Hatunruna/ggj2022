@@ -19,8 +19,8 @@ namespace hg {
   }
 
   void LayerEntity::render(gf::RenderTarget &target, const gf::RenderStates &states) {
-    assert(m_state.level < m_scenery.levels.size());
-    LevelScenery& currentLevel = m_scenery.levels[m_state.level];
+    assert(m_state.levelIndex < m_scenery.levels.size());
+    LevelScenery& currentLevel = m_scenery.levels[m_state.levelIndex];
 
     for (auto & layer : currentLevel.layers) {
       target.draw(layer, states);

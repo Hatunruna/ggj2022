@@ -5,12 +5,15 @@
 
 #include <gf/Path.h>
 
+#include "LevelState.h"
+
 namespace hg {
 
   struct GameState {
     static constexpr uint16_t Version = 1;
 
-    std::size_t level = 0;
+    std::size_t levelIndex = 0;
+    LevelState level;
 
     void loadFromFile(const gf::Path& filename);
     void saveToFile(const gf::Path& filename);
