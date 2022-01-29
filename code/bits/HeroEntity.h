@@ -10,19 +10,23 @@
 #include "Hero.h"
 
 namespace hg {
+  class PhysicsModel;
+
   class HeroEntity : public gf::Entity {
   public:
-    HeroEntity(gf::ResourceManager& resources, AudioManager& audio, Hero hero, gf::Vector2f position);
+    HeroEntity(gf::ResourceManager& resources, PhysicsModel& physics, AudioManager& audio, Hero hero);
 
     void setDirection(gf::Direction direction);
+    void jump();
 
     void update(gf::Time time) override;
     void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
 
   private:
+    PhysicsModel& m_physics;
+
     // State
-    const Hero m_hero;
-    gf::Vector2f m_position;
+    Hero m_hero;
 
     // Graphics
     gf::Texture& m_pauseTexture;

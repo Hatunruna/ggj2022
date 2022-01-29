@@ -52,8 +52,17 @@ namespace hg {
         m_widgets.addWidget(button);
     };
 
-    setupButton(m_tutoButton, [&] () {gf::Log::debug("Tuto button pressed!\n"); m_game.replaceAllScenes(m_game.level); });
-    setupButton(m_level1, [&] () {gf::Log::debug("Level 1 button pressed!\n"); m_game.replaceAllScenes(m_game.level); });
+    setupButton(m_tutoButton, [&] () {
+      gf::Log::debug("Tuto button pressed!\n");
+      m_game.level.loadLevel(m_game.data, m_game.state.level);
+      m_game.replaceAllScenes(m_game.level);
+    });
+
+    setupButton(m_level1, [&] () {
+      gf::Log::debug("Level 1 button pressed!\n");
+      m_game.level.loadLevel(m_game.data, m_game.state.level);
+      m_game.replaceAllScenes(m_game.level);
+    });
   }
 
   void MenuScene::doHandleActions([[maybe_unused]] gf::Window& window) {

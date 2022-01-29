@@ -32,6 +32,7 @@ add_executable(${GAME}
   code/bits/LevelData.cc
   code/bits/LevelScene.cc
   code/bits/LevelScenery.cc
+  code/bits/PhysicsModel.cc
   code/bits/StartScene.cc
   code/bits/TitleEntity.cc
   code/bits/MenuScene.cc

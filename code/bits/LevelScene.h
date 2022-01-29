@@ -6,14 +6,18 @@
 
 #include "LayerEntity.h"
 #include "HeroEntity.h"
+#include "PhysicsModel.h"
 
 namespace hg {
 
+  struct GameData;
   struct GameHub;
 
   class LevelScene : public gf::Scene {
   public:
     LevelScene(GameHub& game);
+
+    void loadLevel(const GameData& data, std::size_t number);
 
   private:
     void doHandleActions(gf::Window& window) override;
@@ -30,6 +34,8 @@ namespace hg {
     // Gret actions
     gf::Action m_gretRunLeftAction;
     gf::Action m_gretRunRightAction;
+
+    PhysicsModel m_physics;
 
     LayerEntity m_layer;
     HeroEntity m_hanz; // red

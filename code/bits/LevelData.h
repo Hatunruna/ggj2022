@@ -56,6 +56,9 @@ namespace hg {
     std::vector<PlatformData> platforms;
     std::vector<gf::SegmentI> limits;
 
+    gf::Vector2i hanz = gf::vec(-1, -1);
+    gf::Vector2i gret = gf::vec(-1, -1);
+
     static LevelData makeFromTmx(const gf::TmxLayers& tmx);
   };
 

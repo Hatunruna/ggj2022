@@ -57,26 +57,26 @@ namespace hg {
 
     PlatformData makeHorizontalPlatform(const gf::Array2D<PlatformType, int>& tiles, gf::Vector2i start, PlatformType end, PlatformType type) {
       PlatformData platform;
-      platform.type == type;
+      platform.type = type;
       platform.segment.p0 = platform.segment.p1 = start;
 
-      while (tiles(platform.segment.p1) != end) {
+      do {
         ++platform.segment.p1.x;
         assert(tiles.isValid(platform.segment.p1));
-      }
+      } while (tiles(platform.segment.p1) != end);
 
       return platform;
     }
 
     PlatformData makeVerticalPlatform(const gf::Array2D<PlatformType, int>& tiles, gf::Vector2i start, PlatformType end, PlatformType type) {
       PlatformData platform;
-      platform.type == type;
+      platform.type = type;
       platform.segment.p0 = platform.segment.p1 = start;
 
-      while (tiles(platform.segment.p1) != end) {
+      do {
         ++platform.segment.p1.y;
         assert(tiles.isValid(platform.segment.p1));
-      }
+      } while (tiles(platform.segment.p1) != end);
 
       return platform;
     }
@@ -113,17 +113,28 @@ namespace hg {
         case PlatformType::Blue_VU:
           data.platforms.push_back(makeVerticalPlatform(data.tiles, position, PlatformType::Blue_VD, PlatformType::Blue_V));
           break;
+        case PlatformType::Red_Start:
+          data.hanz = position;
+          gf::Log::debug("Hanz: %i,%i\n", position.x, position.y);
+          break;
+        case PlatformType::Blue_Start:
+          data.gret = position;
+          gf::Log::debug("Gret: %i,%i\n", position.x, position.y);
+          break;
       }
     }
 
     gf::Log::debug("Number of platforms: %zu\n", data.platforms.size());
 
+    assert(data.hanz != gf::vec(-1, -1));
+    assert(data.gret != gf::vec(-1, -1));
+
     // limits harcoded for now...
 
     data.limits.push_back({ gf::vec(0,0), gf::vec(0, 31) });
     data.limits.push_back({ gf::vec(0,0), gf::vec(31, 0) });
-    data.limits.push_back({ gf::vec(31,31), gf::vec(0, 31) });
-    data.limits.push_back({ gf::vec(31,31), gf::vec(31, 0) });
+    data.limits.push_back({ gf::vec(0, 31), gf::vec(31,31) });
+    data.limits.push_back({ gf::vec(31, 0), gf::vec(31,31) });
 
     return data;
   }

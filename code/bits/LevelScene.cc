@@ -21,8 +21,8 @@ namespace hg {
   , m_gretRunLeftAction("gretRunLeft")
   , m_gretRunRightAction("gretRunRight")
   , m_layer(game.scenery, game.state)
-  , m_hanz(game.resources, game.audio, Hero::Hanz, WorldSize * 0.2f)
-  , m_gret(game.resources, game.audio, Hero::Gret, WorldSize * 0.8f)
+  , m_hanz(game.resources, m_physics, game.audio, Hero::Hanz)
+  , m_gret(game.resources, m_physics, game.audio, Hero::Gret)
   {
     setWorldViewCenter(WorldSize / 2);
     setWorldViewSize(WorldSize);
@@ -50,9 +50,15 @@ namespace hg {
     m_quitAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::Start);
     addAction(m_quitAction);
 
+    addModel(m_physics);
+
     addWorldEntity(m_layer);
     addWorldEntity(m_hanz);
     addWorldEntity(m_gret);
+  }
+
+  void LevelScene::loadLevel(const GameData& data, std::size_t number) {
+    m_physics.loadLevel(data, number);
   }
 
   void LevelScene::doHandleActions([[maybe_unused]] gf::Window& window) {

@@ -5,6 +5,8 @@
 #include <gf/RenderTarget.h>
 #include <gf/Sprite.h>
 
+#include "PhysicsModel.h"
+
 namespace hg {
 
   namespace {
@@ -27,9 +29,9 @@ namespace hg {
   }
 
 
-  HeroEntity::HeroEntity(gf::ResourceManager& resources, AudioManager& audio, Hero hero, gf::Vector2f position)
-  : m_hero(hero)
-  , m_position(position)
+  HeroEntity::HeroEntity(gf::ResourceManager& resources, PhysicsModel& physics, AudioManager& audio, Hero hero)
+  : m_physics(physics)
+  , m_hero(hero)
   , m_pauseTexture(getHeroTexture(resources, "pause.png", hero))
   , m_runTexture(getHeroTexture(resources, "run.png", hero))
   , m_facedDirection(gf::Direction::Left)
@@ -51,6 +53,12 @@ namespace hg {
     } else if (direction == gf::Direction::Center) {
       m_runAnimation.reset();
     }
+
+    m_physics.setDirection(m_hero, direction);
+  }
+
+  void HeroEntity::jump() {
+    m_physics.jump(m_hero);
   }
 
   void HeroEntity::update(gf::Time time) {
@@ -64,7 +72,7 @@ namespace hg {
       gf::AnimatedSprite sprite;
       sprite.setAnimation(animation);
       sprite.setAnchor(gf::Anchor::Center);
-      sprite.setPosition(m_position);
+      sprite.setPosition(m_physics.getPosition(m_hero));
       if (invert) {
         sprite.setScale(gf::vec(-TextureScale, TextureScale));
       } else {
@@ -78,7 +86,7 @@ namespace hg {
       gf::Sprite sprite;
       sprite.setTexture(m_pauseTexture);
       sprite.setAnchor(gf::Anchor::Center);
-      sprite.setPosition(m_position);
+      sprite.setPosition(m_physics.getPosition(m_hero));
       if (m_facedDirection == gf::Direction::Right) {
         sprite.setScale(gf::vec(-TextureScale, TextureScale));
       } else {
