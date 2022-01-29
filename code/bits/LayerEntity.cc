@@ -4,13 +4,13 @@
 
 #include <gf/RenderTarget.h>
 
-#include "GameData.h"
+#include "GameScenery.h"
 #include "GameState.h"
 
 namespace hg {
 
-  LayerEntity::LayerEntity(GameData& data, const GameState& state)
-  : m_data(data)
+  LayerEntity::LayerEntity(GameScenery& scenery, const GameState& state)
+  : m_scenery(scenery)
   , m_state(state)
   {
   }
@@ -19,8 +19,8 @@ namespace hg {
   }
 
   void LayerEntity::render(gf::RenderTarget &target, const gf::RenderStates &states) {
-    assert(m_state.level < m_data.levels.size());
-    LevelData& currentLevel = m_data.levels[m_state.level];
+    assert(m_state.level < m_scenery.levels.size());
+    LevelScenery& currentLevel = m_scenery.levels[m_state.level];
 
     for (auto & layer : currentLevel.layers) {
       target.draw(layer, states);
