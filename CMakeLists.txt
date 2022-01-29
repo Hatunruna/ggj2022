@@ -36,7 +36,6 @@ add_executable(${GAME}
   code/bits/TitleEntity.cc
   code/bits/MenuScene.cc
   code/bits/MenuTitleEntity.cc
-  code/bits/LevelSelectorEntity.cc
   code/bits/QuitScene.cc
 )
 

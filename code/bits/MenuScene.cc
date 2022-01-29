@@ -1,7 +1,7 @@
 #include "MenuScene.h"
 
-#include <gf/Color.h>
-
+#include <gf/Log.h>
+#include <gf/Coordinates.h>
 #include "GameHub.h"
 
 namespace hg {
@@ -9,31 +9,48 @@ namespace hg {
   MenuScene::MenuScene(GameHub& game)
   : gf::Scene(game.getRenderer().getSize())
   , m_game(game)
-  , m_gameAction("Game")
-  , m_fullscreenAction("Fullscreen")
+  , m_upAction("UpAction")
+  , m_downAction("DownAction")
+  , m_triggerAction("TriggerAction")
   , m_quitAction("Quit")
   , m_menuTitleEntity(game.resources, game.audio)
-  , m_levelSelector()
+  , m_tutoButton("Tuto", game.resources.getFont("Underdog.otf"))
+  , m_level1("Level 1", game.resources.getFont("Underdog.otf"))
   {
     setClearColor(gf::Color::Black);
-
-    m_gameAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::A);
-    m_gameAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::B);
-    m_gameAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::X);
-    m_gameAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::Y);
-    m_gameAction.addKeycodeKeyControl(gf::Keycode::Space);
-    addAction(m_gameAction);
-
-//     m_fullscreenAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::Guide);
-    addAction(m_fullscreenAction);
+    addHudEntity(m_menuTitleEntity);
 
     m_quitAction.addKeycodeKeyControl(gf::Keycode::Escape);
     addAction(m_quitAction);
 
-    m_levelSelector.reserve(25u);
+    m_upAction.addGamepadAxisControl(gf::AnyGamepad, gf::GamepadAxis::LeftY, gf::GamepadAxisDirection::Positive);
+    m_upAction.addScancodeKeyControl(gf::Scancode::Up);
+    addAction(m_upAction);
 
-    addHudEntity(m_menuTitleEntity);
-    addHudEntity(m_levelSelector.emplace_back(game.resources, m_game, gf::Vector2f(0.4,0.2), "tuto"));
+    m_downAction.addGamepadAxisControl(gf::AnyGamepad, gf::GamepadAxis::LeftY, gf::GamepadAxisDirection::Negative);
+    m_downAction.addScancodeKeyControl(gf::Scancode::Down);
+    addAction(m_downAction);
+
+    m_triggerAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::A);
+    m_triggerAction.addScancodeKeyControl(gf::Scancode::Return);
+    m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
+    addAction(m_triggerAction);
+
+    auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
+        button.setDefaultTextColor(gf::Color::Black);
+        button.setDefaultBackgroundColor(gf::Color::Gray(0.7f));
+        button.setSelectedTextColor(gf::Color::Black);
+        button.setSelectedBackgroundColor(gf::Color::Green);
+        button.setDisabledTextColor(gf::Color::Black);
+        button.setDisabledBackgroundColor(gf::Color::Red);
+        button.setAnchor(gf::Anchor::TopLeft);
+        button.setAlignment(gf::Alignment::Center);
+        button.setCallback(callback);
+        m_widgets.addWidget(button);
+    };
+
+    setupButton(m_tutoButton, [&] () {gf::Log::debug("Tuto button pressed!\n"); m_game.replaceAllScenes(m_game.level); });
+    setupButton(m_level1, [&] () {gf::Log::debug("Level 1 button pressed!\n"); m_game.replaceAllScenes(m_game.level); });
   }
 
   void MenuScene::doHandleActions([[maybe_unused]] gf::Window& window) {
@@ -41,17 +58,62 @@ namespace hg {
       return;
     }
 
-    if (m_fullscreenAction.isActive()) {
-      window.toggleFullscreen();
+    if (m_upAction.isActive()) {
+      m_widgets.selectPreviousWidget();
     }
 
-    if (m_gameAction.isActive()) {
-      m_game.replaceScene(m_game.level);
+    if (m_downAction.isActive()) {
+      m_widgets.selectNextWidget();
+    }
+
+    if (m_triggerAction.isActive()) {
+      m_widgets.triggerAction();
     }
 
     if (m_quitAction.isActive()) {
       m_game.replaceScene(m_game.start);
     }
   }
+
+  void MenuScene::doProcessEvent(gf::Event& event) {
+    switch (event.type)
+    {
+      case gf::EventType::MouseMoved:
+        m_widgets.pointTo(m_game.computeWindowToGameCoordinates(event.mouseCursor.coords, getHudView()));
+        break;
+    }
+  }
+
+  void MenuScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
+
+    constexpr float characterSize = 0.1f;
+    constexpr float spaceBetweenButton = 0.025f;
+    constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
+
+    target.setView(getHudView());
+    gf::Coordinates coords(target);
+
+    const float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
+    const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
+
+    m_tutoButton.setCharacterSize(resumeCharacterSize);
+    m_tutoButton.setPosition(coords.getRelativePoint({0.275f, 0.425f}));
+    m_tutoButton.setParagraphWidth(paragraphWidth);
+
+    m_level1.setCharacterSize(resumeCharacterSize);
+    m_level1.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
+    m_level1.setParagraphWidth(paragraphWidth);
+
+    m_widgets.render(target, states);
+    m_menuTitleEntity.render(target,states);
+  }
+
+  void MenuScene::doShow() {
+    m_widgets.clear();
+    m_widgets.addWidget(m_tutoButton);
+    m_widgets.addWidget(m_level1);
+    m_widgets.selectNextWidget();
+  }
+
 
 }
