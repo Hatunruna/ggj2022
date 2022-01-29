@@ -12,6 +12,8 @@ namespace hg {
   namespace {
     constexpr float TextureScale = 64.0f / 256.0f;
     constexpr float JumpTextureOffset = 32.0f;
+    constexpr int LandAnimationFrameCount = 4;
+    constexpr gf::Time LandTotalTimeAnimaion = gf::seconds(LandAnimationFrameCount * (1.0f / 25.0f));
 
     gf::Texture& getHeroTexture(gf::ResourceManager& resources, const std::string& textureName, Hero hero) {
       std::string dir;
@@ -38,6 +40,7 @@ namespace hg {
   , m_runTexture(getHeroTexture(resources, "run.png", hero))
   , m_jumpTexture(getHeroTexture(resources, "jump.png", hero))
   , m_fallTexture(getHeroTexture(resources, "fall.png", hero))
+  , m_landTexture(getHeroTexture(resources, "land.png", hero))
   , m_facedDirection(gf::Direction::Left)
   , m_moveDirection(gf::Direction::Center)
   {
@@ -53,6 +56,8 @@ namespace hg {
     m_jumpAnimation.setLoop(false);
     m_fallAnimation.addTileset(m_fallTexture, gf::vec(3, 3), gf::seconds(1.0f / 25.0f), 6);
     m_fallAnimation.setLoop(false);
+    m_landAnimation.addTileset(m_landTexture, gf::vec(3, 3), gf::seconds(1.0f / 25.0f), LandAnimationFrameCount);
+    m_landAnimation.setLoop(false);
   }
 
   void HeroEntity::setDirection(gf::Direction direction) {
@@ -97,6 +102,10 @@ namespace hg {
       }
       break;
 
+    case HeroState::Land:
+      // nothing
+      break;
+
     default:
       // TODO: land
       // TODO: activate
@@ -120,13 +129,15 @@ namespace hg {
   }
 
   void HeroEntity::update(gf::Time time) {
+    auto heroVelocity = m_physics.getVelocity(m_hero);
+
     switch (m_state) {
     case HeroState::Run:
       m_runAnimation.update(time);
       break;
 
     case HeroState::Jump:
-      if (m_physics.isColliding(m_hero) || m_physics.getVelocity(m_hero).y > 0.0f) {
+      if (heroVelocity.y > 0.0f) {
         m_fallAnimation.reset();
         m_state = HeroState::Fall;
       } else {
@@ -134,6 +145,23 @@ namespace hg {
       }
 
       break;
+
+    case HeroState::Fall:
+      if (heroVelocity.y <= 0.0f) {
+        gf::Log::debug("Landed\n");
+        m_state = HeroState::Land;
+        m_elapsedTime = gf::seconds(0.0f);
+      }
+      break;
+
+    case HeroState::Land:
+      m_elapsedTime += time;
+      m_landAnimation.update(time);
+
+      if (m_elapsedTime > LandTotalTimeAnimaion) {
+        m_state = HeroState::Pause;
+        gf::Log::debug("end land\n");
+      }
     }
   }
 
@@ -179,6 +207,10 @@ namespace hg {
 
     case HeroState::Fall:
       drawAnimation(m_physics.getPosition(m_hero) - gf::vec(0.0f, JumpTextureOffset), m_fallAnimation, m_facedDirection == gf::Direction::Right);
+      break;
+
+    case HeroState::Land:
+      drawAnimation(m_physics.getPosition(m_hero) - gf::vec(0.0f, JumpTextureOffset), m_landAnimation, m_facedDirection == gf::Direction::Right);
       break;
 
     default:

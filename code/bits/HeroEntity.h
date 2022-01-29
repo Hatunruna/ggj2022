@@ -38,6 +38,7 @@ namespace hg {
     // State
     Hero m_hero;
     HeroState m_state;
+    gf::Time m_elapsedTime;
 
     // Graphics
     gf::Texture& m_pauseTexture;
@@ -47,6 +48,8 @@ namespace hg {
     gf::Animation m_jumpAnimation;
     gf::Texture& m_fallTexture;
     gf::Animation m_fallAnimation;
+    gf::Texture& m_landTexture;
+    gf::Animation m_landAnimation;
 
     // Actions
     gf::Direction m_facedDirection; // To handle pause position
