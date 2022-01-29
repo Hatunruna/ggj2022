@@ -11,6 +11,7 @@ namespace hg {
 
   namespace {
     constexpr float TextureScale = 64.0f / 256.0f;
+    constexpr float JumpTextureOffset = 32.0f;
 
     gf::Texture& getHeroTexture(gf::ResourceManager& resources, const std::string& textureName, Hero hero) {
       std::string dir;
@@ -137,11 +138,11 @@ namespace hg {
   }
 
   void HeroEntity::render(gf::RenderTarget &target, const gf::RenderStates &states) {
-    auto drawAnimation = [this, &target, &states](gf::Animation& animation, bool inverted = false) {
+    auto drawAnimation = [this, &target, &states](gf::Vector2f pos, gf::Animation& animation, bool inverted = false) {
       gf::AnimatedSprite sprite;
       sprite.setAnimation(animation);
       sprite.setAnchor(gf::Anchor::Center);
-      sprite.setPosition(m_physics.getPosition(m_hero));
+      sprite.setPosition(pos);
       if (inverted) {
         sprite.setScale(gf::vec(-TextureScale, TextureScale));
       } else {
@@ -169,15 +170,15 @@ namespace hg {
       break;
 
     case HeroState::Run:
-      drawAnimation(m_runAnimation, m_facedDirection == gf::Direction::Right);
+      drawAnimation(m_physics.getPosition(m_hero), m_runAnimation, m_facedDirection == gf::Direction::Right);
       break;
 
     case HeroState::Jump:
-      drawAnimation(m_jumpAnimation, m_facedDirection == gf::Direction::Right);
+      drawAnimation(m_physics.getPosition(m_hero) - gf::vec(0.0f, JumpTextureOffset), m_jumpAnimation, m_facedDirection == gf::Direction::Right);
       break;
 
     case HeroState::Fall:
-      drawAnimation(m_fallAnimation, m_facedDirection == gf::Direction::Right);
+      drawAnimation(m_physics.getPosition(m_hero) - gf::vec(0.0f, JumpTextureOffset), m_fallAnimation, m_facedDirection == gf::Direction::Right);
       break;
 
     default:
