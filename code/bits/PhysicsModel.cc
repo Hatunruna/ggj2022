@@ -21,8 +21,8 @@ namespace hg {
     for (auto & platform : level.platforms) {
       gf::RectF rect = gf::RectF::fromMinMax(platform.segment.p0 * TileSize, (platform.segment.p1 + 1) * TileSize);
 
-      rect.min.x += TileSize.width * 1.25f;
-      rect.max.x -= TileSize.width * 1.25f;
+      rect.min.x += TileSize.width * 0.5f;
+      rect.max.x -= TileSize.width * 0.5f;
       rect.max.y -= TileSize.width * 0.5f;
 
       Body body;
