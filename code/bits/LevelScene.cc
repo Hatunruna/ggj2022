@@ -54,13 +54,16 @@ namespace hg {
 
     m_gretRunLeftAction.setContinuous();
     m_gretRunLeftAction.addScancodeKeyControl(gf::Scancode::A);
+    m_gretRunLeftAction.addScancodeKeyControl(gf::Scancode::Left);
     addAction(m_gretRunLeftAction);
 
     m_gretRunRightAction.setContinuous();
     m_gretRunRightAction.addScancodeKeyControl(gf::Scancode::D);
+    m_gretRunRightAction.addScancodeKeyControl(gf::Scancode::Right);
     addAction(m_gretRunRightAction);
 
     m_gretJumpAction.addScancodeKeyControl(gf::Scancode::Space);
+    m_gretJumpAction.addScancodeKeyControl(gf::Scancode::Up);
     addAction(m_gretJumpAction);
 
     m_gretActivateAction.addScancodeKeyControl(gf::Scancode::E);
