@@ -31,6 +31,7 @@ namespace hg {
     addAction(m_downAction);
 
     m_triggerAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::A);
+    m_triggerAction.addScancodeKeyControl(gf::Scancode::Return);
     m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
     addAction(m_triggerAction);
 
