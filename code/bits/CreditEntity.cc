@@ -10,7 +10,7 @@ namespace hg {
 
   CreditEntity::CreditEntity(gf::ResourceManager& resources, AudioManager& audio)
   : m_font(resources.getFont("Underdog.otf"))
-//   , m_backgroundTexture(resources.getTexture("logo.png"))
+  , m_backgroundTexture(resources.getTexture("title.png"))
   {
 
   }
@@ -20,6 +20,16 @@ namespace hg {
 
   void CreditEntity::render(gf::RenderTarget &target, const gf::RenderStates &states) {
     gf::Coordinates coords(target);
+
+    float backgroundHeight = coords.getRelativeSize(gf::vec(0.0f, 1.0f)).height;
+    float backgroundScale = backgroundHeight / m_backgroundTexture.getSize().height;
+
+    gf::Sprite background(m_backgroundTexture);
+    background.setColor(gf::Color::Opaque(0.20f));
+    background.setPosition(coords.getCenter());
+    background.setAnchor(gf::Anchor::Center);
+    background.setScale(backgroundScale);
+    target.draw(background, states);
 
     unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.1f);
     unsigned subtitleCharacterSize = coords.getRelativeCharacterSize(0.07f);

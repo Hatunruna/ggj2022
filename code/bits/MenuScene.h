@@ -25,6 +25,8 @@ namespace hg {
 
   private:
     GameHub& m_game;
+    gf::Texture& m_backgroundTexture;
+
     gf::Action m_quitAction;
 
     gf::Action m_upAction;

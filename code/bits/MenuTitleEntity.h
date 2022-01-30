@@ -16,6 +16,7 @@ namespace hg {
     void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
   private:
     gf::Font& m_font;
+    gf::Texture& m_backgroundTexture;
   };
 
 
