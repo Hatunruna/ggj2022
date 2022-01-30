@@ -72,7 +72,7 @@ namespace hg {
 
     setupButton(m_quit, [&] () {
         gf::Log::debug("Quit pressed!\n");
-        m_game.replaceAllScenes(m_game.start);
+        m_game.popAllScenes();
     });
   }
 
@@ -94,7 +94,7 @@ namespace hg {
     }
 
     if (m_quitAction.isActive()) {
-      m_game.replaceScene(m_game.start);
+      m_game.popAllScenes();
     }
   }
 
