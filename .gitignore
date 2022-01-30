@@ -2,4 +2,3 @@ build/
 .vscode/
 cmake-build-debug/
 .idea/
-data/raw
