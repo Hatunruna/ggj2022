@@ -247,11 +247,11 @@ namespace hg {
       target.draw(sprite, states);
     };
 
-    auto drawSprite = [this, &target, &states](gf::Texture& texture, bool inverted = false) {
+    auto drawSprite = [this, &target, &states](gf::Vector2f pos, gf::Texture& texture, bool inverted = false) {
       gf::Sprite sprite;
       sprite.setTexture(texture);
       sprite.setAnchor(gf::Anchor::Center);
-      sprite.setPosition(m_physics.getPosition(m_hero));
+      sprite.setPosition(pos);
       if (m_facedDirection == gf::Direction::Right) {
         sprite.setScale(gf::vec(-TextureScale, TextureScale));
       } else {
@@ -260,29 +260,35 @@ namespace hg {
       target.draw(sprite, states);
     };
 
+    auto pos = m_physics.getPosition(m_hero);
+    pos.y += 6; // To align the hero to the platform
+    if (m_state == HeroState::Jump || m_state == HeroState::Fall || m_state == HeroState::Land) {
+      pos.y -= JumpTextureOffset;
+    }
+
     switch (m_state) {
     case HeroState::Pause:
-      drawSprite(m_pauseTexture, m_facedDirection == gf::Direction::Right);
+      drawSprite(pos, m_pauseTexture, m_facedDirection == gf::Direction::Right);
       break;
 
     case HeroState::Run:
-      drawAnimation(m_physics.getPosition(m_hero), m_runAnimation, m_facedDirection == gf::Direction::Right);
+      drawAnimation(pos, m_runAnimation, m_facedDirection == gf::Direction::Right);
       break;
 
     case HeroState::Jump:
-      drawAnimation(m_physics.getPosition(m_hero) - gf::vec(0.0f, JumpTextureOffset), m_jumpAnimation, m_facedDirection == gf::Direction::Right);
+      drawAnimation(pos, m_jumpAnimation, m_facedDirection == gf::Direction::Right);
       break;
 
     case HeroState::Fall:
-      drawAnimation(m_physics.getPosition(m_hero) - gf::vec(0.0f, JumpTextureOffset), m_fallAnimation, m_facedDirection == gf::Direction::Right);
+      drawAnimation(pos, m_fallAnimation, m_facedDirection == gf::Direction::Right);
       break;
 
     case HeroState::Land:
-      drawAnimation(m_physics.getPosition(m_hero) - gf::vec(0.0f, JumpTextureOffset), m_landAnimation, m_facedDirection == gf::Direction::Right);
+      drawAnimation(pos, m_landAnimation, m_facedDirection == gf::Direction::Right);
       break;
 
     case HeroState::Activate:
-      drawAnimation(m_physics.getPosition(m_hero), m_activateAnimation, m_facedDirection == gf::Direction::Right);
+      drawAnimation(pos, m_activateAnimation, m_facedDirection == gf::Direction::Right);
       break;
 
     default:
