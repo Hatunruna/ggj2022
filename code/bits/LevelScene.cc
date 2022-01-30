@@ -21,9 +21,11 @@ namespace hg {
   , m_hanzRunLeftAction("hanzRunLeft")
   , m_hanzRunRightAction("hanzRunRight")
   , m_hanzJumpAction("hanzJump")
+  , m_hanzActivateAction("hanzActivate")
   , m_gretRunLeftAction("gretRunLeft")
   , m_gretRunRightAction("gretRunRight")
   , m_gretJumpAction("gretJump")
+  , m_gretActivateAction("gretActivate")
   , m_layer(game.scenery, game.state)
   , m_hanz(game.resources, m_physics, game.audio, Hero::Hanz)
   , m_gret(game.resources, m_physics, game.audio, Hero::Gret)
@@ -45,6 +47,9 @@ namespace hg {
     m_hanzJumpAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::A);
     addAction(m_hanzJumpAction);
 
+    m_hanzActivateAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::X);
+    addAction(m_hanzActivateAction);
+
     m_gretRunLeftAction.setContinuous();
     m_gretRunLeftAction.addScancodeKeyControl(gf::Scancode::A);
     addAction(m_gretRunLeftAction);
@@ -55,6 +60,9 @@ namespace hg {
 
     m_gretJumpAction.addScancodeKeyControl(gf::Scancode::Space);
     addAction(m_gretJumpAction);
+
+    m_gretActivateAction.addScancodeKeyControl(gf::Scancode::E);
+    addAction(m_gretActivateAction);
 
     m_quitAction.addScancodeKeyControl(gf::Scancode::Escape);
     m_quitAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::Start);
@@ -104,6 +112,8 @@ namespace hg {
 
     if (m_hanzJumpAction.isActive()) {
       m_hanz.jump();
+    } else if (m_hanzActivateAction.isActive()) {
+      m_hanz.activate();
     }
 
     if (m_hanzRunLeftAction.isActive()) {
@@ -116,6 +126,8 @@ namespace hg {
 
     if (m_gretJumpAction.isActive()) {
       m_gret.jump();
+    } else if (m_gretActivateAction.isActive()) {
+      m_gret.activate();
     }
 
     if (m_gretRunLeftAction.isActive()) {

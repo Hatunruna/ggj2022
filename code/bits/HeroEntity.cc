@@ -14,6 +14,8 @@ namespace hg {
     constexpr float JumpTextureOffset = 32.0f;
     constexpr int LandAnimationFrameCount = 4;
     constexpr gf::Time LandTotalTimeAnimaion = gf::seconds(LandAnimationFrameCount * (1.0f / 25.0f));
+    constexpr int ActivateAnimationFrameCount = 8;
+    constexpr gf::Time ActivateTotalTimeAnimaion = gf::seconds(ActivateAnimationFrameCount * (1.0f / 25.0f));
 
     gf::Texture& getHeroTexture(gf::ResourceManager& resources, const std::string& textureName, Hero hero) {
       std::string dir;
@@ -56,6 +58,7 @@ namespace hg {
   , m_jumpTexture(getHeroTexture(resources, "jump.png", hero))
   , m_fallTexture(getHeroTexture(resources, "fall.png", hero))
   , m_landTexture(getHeroTexture(resources, "land.png", hero))
+  , m_activateTexture(getHeroTexture(resources, "activate.png", hero))
   , m_jumpSound(getHeroSound(audio, "jump.ogg", hero))
   , m_landSound(audio.getSound("land.ogg"))
   , m_runSound(getHeroSound(audio, "run.ogg", hero))
@@ -67,6 +70,7 @@ namespace hg {
     m_runTexture.setSmooth();
     m_jumpTexture.setSmooth();
     m_fallTexture.setSmooth();
+    m_activateTexture.setSmooth();
 
     // Load animation
     m_runAnimation.addTileset(m_runTexture, gf::vec(4, 3), gf::seconds(1.0f / 25.0f), 12);
@@ -76,6 +80,8 @@ namespace hg {
     m_fallAnimation.setLoop(false);
     m_landAnimation.addTileset(m_landTexture, gf::vec(3, 3), gf::seconds(1.0f / 25.0f), LandAnimationFrameCount);
     m_landAnimation.setLoop(false);
+    m_activateAnimation.addTileset(m_activateTexture, gf::vec(4, 3), gf::seconds(1.0f / 25.0f), ActivateAnimationFrameCount);
+    m_activateAnimation.setLoop(false);
 
     // Set audio volume
     m_jumpSound.setVolume(10.0f);
@@ -97,7 +103,6 @@ namespace hg {
         m_runSound.play();
         m_state = HeroState::Run;
       }
-      // TODO: activate
 
       break;
 
@@ -116,7 +121,6 @@ namespace hg {
         m_runSound.stop();
         m_runAnimation.reset();
       }
-      // TODO: activate
 
       break;
 
@@ -133,11 +137,11 @@ namespace hg {
       break;
 
     case HeroState::Land:
+    case HeroState::Activate:
       // nothing
       break;
 
     default:
-      // TODO: activate
       assert(false);
       break;
     }
@@ -153,6 +157,15 @@ namespace hg {
         m_runSound.stop();
         m_jumpSound.play();
       }
+    }
+  }
+
+  void HeroEntity::activate() {
+    if (m_state == HeroState::Pause || m_state == HeroState::Run) {
+      m_activateAnimation.reset();
+      m_elapsedTime = gf::seconds(0.0f);
+      m_state = HeroState::Activate;
+      m_runSound.stop();
     }
   }
 
@@ -197,6 +210,15 @@ namespace hg {
       m_landAnimation.update(time);
 
       if (m_elapsedTime > LandTotalTimeAnimaion) {
+        m_state = HeroState::Pause;
+      }
+      break;
+
+    case HeroState::Activate:
+      m_elapsedTime += time;
+      m_activateAnimation.update(time);
+
+      if (m_elapsedTime > ActivateTotalTimeAnimaion) {
         m_state = HeroState::Pause;
       }
       break;
@@ -253,6 +275,10 @@ namespace hg {
 
     case HeroState::Land:
       drawAnimation(m_physics.getPosition(m_hero) - gf::vec(0.0f, JumpTextureOffset), m_landAnimation, m_facedDirection == gf::Direction::Right);
+      break;
+
+    case HeroState::Activate:
+      drawAnimation(m_physics.getPosition(m_hero), m_activateAnimation, m_facedDirection == gf::Direction::Right);
       break;
 
     default:

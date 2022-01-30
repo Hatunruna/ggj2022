@@ -39,11 +39,13 @@ namespace hg {
     gf::Action m_hanzRunLeftAction;
     gf::Action m_hanzRunRightAction;
     gf::Action m_hanzJumpAction;
+    gf::Action m_hanzActivateAction;
 
     // Gret actions
     gf::Action m_gretRunLeftAction;
     gf::Action m_gretRunRightAction;
     gf::Action m_gretJumpAction;
+    gf::Action m_gretActivateAction;
 
     PhysicsModel m_physics;
 

@@ -30,6 +30,7 @@ namespace hg {
 
     void setDirection(gf::Direction direction);
     void jump();
+    void activate();
 
     void update(gf::Time time) override;
     void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
@@ -52,6 +53,8 @@ namespace hg {
     gf::Animation m_fallAnimation;
     gf::Texture& m_landTexture;
     gf::Animation m_landAnimation;
+    gf::Texture& m_activateTexture;
+    gf::Animation m_activateAnimation;
 
     // Audio
     sf::Sound m_jumpSound;
