@@ -87,7 +87,7 @@ namespace hg {
   struct ButtonData {
     ButtonType type = ButtonType::Unknown;
     gf::Vector2i position = gf::vec(-1, -1);
-    std::size_t index = 0; // of platform or lift
+    std::size_t index = std::size_t(-1); // of platform or lift
   };
 
   struct LevelData {

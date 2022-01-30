@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include <gf/Log.h>
+#include <gf/Direction.h>
 
 #include "Constants.h"
 
@@ -133,6 +134,148 @@ namespace hg {
       return lift;
     }
 
+    gf::Direction computeNextDirection(CableType type, gf::Direction current) {
+      switch (current) {
+        case gf::Direction::Center:
+          switch (type) {
+            case CableType::Straight_HL:
+              return gf::Direction::Right;
+            case CableType::Straight_HR:
+              return gf::Direction::Left;
+            case CableType::Straight_VU:
+              return gf::Direction::Down;
+            case CableType::Straight_VD:
+              return gf::Direction::Up;
+            default:
+              gf::Log::debug("Wrong cable type: %i\n", (int) type);
+              assert(false);
+              break;
+          }
+          break;
+        case gf::Direction::Up:
+          switch (type) {
+            case CableType::Straight_VU:
+              return gf::Direction::Center;
+            case CableType::Straight_V:
+            case CableType::Cross:
+              return gf::Direction::Up;
+            case CableType::Turn_LD:
+              return gf::Direction::Left;
+            case CableType::Turn_RD:
+              return gf::Direction::Right;
+            default:
+              gf::Log::debug("Wrong cable type: %i\n", (int) type);
+              assert(false);
+              break;
+          }
+          break;
+        case gf::Direction::Down:
+          switch (type) {
+            case CableType::Straight_VD:
+              return gf::Direction::Center;
+            case CableType::Straight_V:
+            case CableType::Cross:
+              return gf::Direction::Down;
+            case CableType::Turn_LU:
+              return gf::Direction::Left;
+            case CableType::Turn_RU:
+              return gf::Direction::Right;
+            default:
+              gf::Log::debug("Wrong cable type: %i\n", (int) type);
+              assert(false);
+              break;
+          }
+          break;
+        case gf::Direction::Right:
+          switch (type) {
+            case CableType::Straight_HR:
+              return gf::Direction::Center;
+            case CableType::Straight_H:
+            case CableType::Cross:
+              return gf::Direction::Right;
+            case CableType::Turn_LD:
+              return gf::Direction::Down;
+            case CableType::Turn_LU:
+              return gf::Direction::Up;
+            default:
+              gf::Log::debug("Wrong cable type: %i\n", (int) type);
+              assert(false);
+              break;
+          }
+          break;
+        case gf::Direction::Left:
+          switch (type) {
+            case CableType::Straight_HL:
+              return gf::Direction::Center;
+            case CableType::Straight_H:
+            case CableType::Cross:
+              return gf::Direction::Left;
+            case CableType::Turn_RD:
+              return gf::Direction::Down;
+            case CableType::Turn_RU:
+              return gf::Direction::Up;
+            default:
+              assert(false);
+              break;
+          }
+          break;
+        default:
+          assert(false);
+          break;
+      }
+
+      return gf::Direction::Center;
+    }
+
+    template<typename T>
+    std::size_t findSegment(const std::vector<T>& data, gf::Vector2i position) {
+      for (std::size_t i = 0; i < data.size(); ++i) {
+        gf::SegmentI segment = data[i].segment;
+
+        if (segment.p0.x == segment.p1.x) {
+          assert(segment.p0.y < segment.p1.y);
+
+          if (position.x != segment.p0.x) {
+            continue;
+          }
+
+          if (segment.p0.y <= position.y && position.y <= segment.p1.y) {
+            return i;
+          }
+        } else {
+          assert(segment.p0.y == segment.p1.y);
+          assert(segment.p0.x < segment.p1.x);
+
+          if (position.y != segment.p0.y) {
+            continue;
+          }
+
+          if (segment.p0.x <= position.x && position.x <= segment.p1.x) {
+            return i;
+          }
+        }
+      }
+
+      assert(false);
+      return data.size();
+    }
+
+    gf::Vector2i followCable(const gf::Array2D<CableType, int>& tiles, ButtonData& button) {
+      gf::Vector2i position = button.position;
+      gf::Direction direction = gf::Direction::Center;
+
+      gf::Log::debug("Start of cable: (%i,%i)\n", position.x, position.y);
+
+      do {
+        direction = computeNextDirection(tiles(position), direction);
+        position += gf::displacement(direction);
+        gf::Log::debug("\t(%i,%i)\n", position.x, position.y);
+      } while (direction != gf::Direction::Center);
+
+      gf::Log::debug("End of cable: (%i,%i)\n", position.x, position.y);
+      return position;
+    }
+
   }
 
   LevelData::LevelData()
@@ -215,7 +358,19 @@ namespace hg {
     gf::Log::debug("Number of lifts: %zu\n", data.lifts.size());
 
     for (auto & button : data.buttons) {
+      gf::Vector2i position = followCable(data.cable_tiles, button);
 
+      switch (button.type) {
+        case ButtonType::Platform:
+          button.index = findSegment(data.platforms, position);
+          break;
+        case ButtonType::Lift:
+          button.index = findSegment(data.lifts, position);
+          break;
+        case ButtonType::Unknown:
+          assert(false);
+          break;
+      }
     }
 
     gf::Log::debug("Number of buttons: %zu\n", data.buttons.size());
