@@ -12,6 +12,8 @@
 #include "StartScene.h"
 #include "MenuScene.h"
 #include "QuitScene.h"
+#include "CreditScene.h"
+#include "SelectLevelScene.h"
 
 namespace hg {
 
@@ -27,6 +29,8 @@ namespace hg {
 
     StartScene start;
     MenuScene menu;
+    SelectLevelScene select;
+    CreditScene credits;
     LevelScene level;
     QuitScene quit;
 

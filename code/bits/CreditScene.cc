@@ -1,4 +1,4 @@
-#include "MenuScene.h"
+#include "CreditScene.h"
 
 #include <gf/Log.h>
 #include <gf/Coordinates.h>
@@ -6,17 +6,15 @@
 
 namespace hg {
 
-  MenuScene::MenuScene(GameHub& game)
+  CreditScene::CreditScene(GameHub& game)
   : gf::Scene(game.getRenderer().getSize())
   , m_game(game)
+  , m_quitAction("Quit")
+  , m_triggerAction("TriggerAction")
+  , m_quitButton("Quit", game.resources.getFont("Underdog.otf"))
+  , m_creditEntity(game.resources, game.audio)
   , m_upAction("UpAction")
   , m_downAction("DownAction")
-  , m_triggerAction("TriggerAction")
-  , m_quitAction("Quit")
-  , m_newGame("New Game", game.resources.getFont("Underdog.otf"))
-  , m_continue("Continue", game.resources.getFont("Underdog.otf"))
-  , m_credits("Credits", game.resources.getFont("Underdog.otf"))
-  , m_quit("Quit", game.resources.getFont("Underdog.otf"))
   {
     setClearColor(gf::Color::Black);
 
@@ -35,8 +33,8 @@ namespace hg {
     addAction(m_downAction);
 
     m_triggerAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::A);
-    m_triggerAction.addScancodeKeyControl(gf::Scancode::Return);
     m_triggerAction.addMouseButtonControl(gf::MouseButton::Left);
+    m_triggerAction.addScancodeKeyControl(gf::Scancode::Return);
     addAction(m_triggerAction);
 
     auto setupButton = [&] (gf::TextButtonWidget& button, auto callback) {
@@ -52,28 +50,13 @@ namespace hg {
         m_widgets.addWidget(button);
     };
 
-    setupButton(m_newGame, [&] () {
-        gf::Log::debug("New Game pressed!\n");
-        m_game.replaceAllScenes(m_game.select);
-    });
-
-    setupButton(m_continue, [&] () {
-        gf::Log::debug("Continue pressed!\n");
-        m_game.replaceAllScenes(m_game.select);
-    });
-
-    setupButton(m_credits, [&] () {
-        gf::Log::debug("Credits pressed!\n");
-        m_game.replaceAllScenes(m_game.credits);
-    });
-
-    setupButton(m_quit, [&] () {
+    setupButton(m_quitButton, [&] () {
         gf::Log::debug("Quit pressed!\n");
         m_game.replaceAllScenes(m_game.start);
     });
   }
 
-  void MenuScene::doHandleActions([[maybe_unused]] gf::Window& window) {
+  void CreditScene::doHandleActions([[maybe_unused]] gf::Window& window) {
     if (!isActive()) {
       return;
     }
@@ -95,7 +78,7 @@ namespace hg {
     }
   }
 
-  void MenuScene::doProcessEvent(gf::Event& event) {
+  void CreditScene::doProcessEvent(gf::Event& event) {
     switch (event.type)
     {
       case gf::EventType::MouseMoved:
@@ -104,18 +87,10 @@ namespace hg {
     }
   }
 
-  void MenuScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
+  void CreditScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
 
     target.setView(getHudView());
     gf::Coordinates coords(target);
-
-    unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.1f);
-
-    gf::Text title("Hanz and Gret", m_game.resources.getFont("Underdog.otf"), titleCharacterSize);
-    title.setColor(gf::Color::White);
-    title.setPosition(coords.getRelativePoint({ 0.5f, 0.0f }));
-    title.setAnchor(gf::Anchor::TopCenter);
-    target.draw(title, states);
 
     constexpr float characterSize = 0.075f;
     constexpr float spaceBetweenButton = 0.045f;
@@ -125,46 +100,22 @@ namespace hg {
     const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
     const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
 
-    m_newGame.setCharacterSize(resumeCharacterSize);
-    m_newGame.setPosition(coords.getRelativePoint({0.275f, 0.425f}));
-    m_newGame.setParagraphWidth(paragraphWidth);
-    m_newGame.setPadding(paddingSize);
-
-    m_continue.setCharacterSize(resumeCharacterSize);
-    m_continue.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
-    m_continue.setParagraphWidth(paragraphWidth);
-    m_continue.setPadding(paddingSize);
-
-    m_credits.setCharacterSize(resumeCharacterSize);
-    m_credits.setPosition(coords.getRelativePoint({0.275f, 0.425f + (characterSize + spaceBetweenButton) * 2}));
-    m_credits.setParagraphWidth(paragraphWidth);
-    m_credits.setPadding(paddingSize);
-
-    m_quit.setCharacterSize(resumeCharacterSize);
-    m_quit.setPosition(coords.getRelativePoint({0.275f, 0.425f + (characterSize + spaceBetweenButton) * 3}));
-    m_quit.setParagraphWidth(paragraphWidth);
-    m_quit.setPadding(paddingSize);
+    m_quitButton.setCharacterSize(resumeCharacterSize);
+    m_quitButton.setPosition(coords.getRelativePoint({0.275f, 0.825f}));
+    m_quitButton.setParagraphWidth(paragraphWidth);
+    m_quitButton.setPadding(paddingSize);
 
     m_widgets.render(target, states);
+    m_creditEntity.render(target,states);
   }
 
-  void MenuScene::doShow() {
+  void CreditScene::doShow() {
     m_widgets.clear();
 
-    m_newGame.setDefault();
-    m_widgets.addWidget(m_newGame);
-
-    m_continue.setDefault();
-    m_widgets.addWidget(m_continue);
-
-    m_credits.setDefault();
-    m_widgets.addWidget(m_credits);
-
-    m_quit.setDefault();
-    m_widgets.addWidget(m_quit);
+    m_quitButton.setDefault();
+    m_widgets.addWidget(m_quitButton);
 
     m_widgets.selectNextWidget();
   }
-
 
 }

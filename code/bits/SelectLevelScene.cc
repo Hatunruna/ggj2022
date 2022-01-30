@@ -6,19 +6,19 @@
 
 namespace hg {
 
-  MenuScene::MenuScene(GameHub& game)
+    SelectLevelScene::SelectLevelScene(GameHub& game)
   : gf::Scene(game.getRenderer().getSize())
   , m_game(game)
   , m_upAction("UpAction")
   , m_downAction("DownAction")
   , m_triggerAction("TriggerAction")
   , m_quitAction("Quit")
-  , m_newGame("New Game", game.resources.getFont("Underdog.otf"))
-  , m_continue("Continue", game.resources.getFont("Underdog.otf"))
-  , m_credits("Credits", game.resources.getFont("Underdog.otf"))
-  , m_quit("Quit", game.resources.getFont("Underdog.otf"))
+  , m_menuTitleEntity(game.resources, game.audio)
+  , m_tutoButton("Tuto", game.resources.getFont("Underdog.otf"))
+  , m_level1("Level 1", game.resources.getFont("Underdog.otf"))
   {
     setClearColor(gf::Color::Black);
+    addHudEntity(m_menuTitleEntity);
 
     m_quitAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::B);
     m_quitAction.addKeycodeKeyControl(gf::Keycode::Escape);
@@ -52,28 +52,20 @@ namespace hg {
         m_widgets.addWidget(button);
     };
 
-    setupButton(m_newGame, [&] () {
-        gf::Log::debug("New Game pressed!\n");
-        m_game.replaceAllScenes(m_game.select);
+    setupButton(m_tutoButton, [&] () {
+      gf::Log::debug("Tuto button pressed!\n");
+      m_game.level.loadLevel(m_game.data, m_game.state.levelIndex);
+      m_game.replaceAllScenes(m_game.level);
     });
 
-    setupButton(m_continue, [&] () {
-        gf::Log::debug("Continue pressed!\n");
-        m_game.replaceAllScenes(m_game.select);
-    });
-
-    setupButton(m_credits, [&] () {
-        gf::Log::debug("Credits pressed!\n");
-        m_game.replaceAllScenes(m_game.credits);
-    });
-
-    setupButton(m_quit, [&] () {
-        gf::Log::debug("Quit pressed!\n");
-        m_game.replaceAllScenes(m_game.start);
+    setupButton(m_level1, [&] () {
+      gf::Log::debug("Level 1 button pressed!\n");
+      m_game.level.loadLevel(m_game.data, m_game.state.levelIndex);
+      m_game.replaceAllScenes(m_game.level);
     });
   }
 
-  void MenuScene::doHandleActions([[maybe_unused]] gf::Window& window) {
+  void SelectLevelScene::doHandleActions([[maybe_unused]] gf::Window& window) {
     if (!isActive()) {
       return;
     }
@@ -95,7 +87,7 @@ namespace hg {
     }
   }
 
-  void MenuScene::doProcessEvent(gf::Event& event) {
+  void SelectLevelScene::doProcessEvent(gf::Event& event) {
     switch (event.type)
     {
       case gf::EventType::MouseMoved:
@@ -104,64 +96,40 @@ namespace hg {
     }
   }
 
-  void MenuScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
+  void SelectLevelScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
+    constexpr float characterSize = 0.075f;
+    constexpr float spaceBetweenButton = 0.025f;
+    constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
 
     target.setView(getHudView());
     gf::Coordinates coords(target);
-
-    unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.1f);
-
-    gf::Text title("Hanz and Gret", m_game.resources.getFont("Underdog.otf"), titleCharacterSize);
-    title.setColor(gf::Color::White);
-    title.setPosition(coords.getRelativePoint({ 0.5f, 0.0f }));
-    title.setAnchor(gf::Anchor::TopCenter);
-    target.draw(title, states);
-
-    constexpr float characterSize = 0.075f;
-    constexpr float spaceBetweenButton = 0.045f;
-    constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
 
     const float paragraphWidth = coords.getRelativeSize(backgroundSize - 0.05f).x;
     const float paddingSize = coords.getRelativeSize({0.01f, 0.f}).x;
     const unsigned resumeCharacterSize = coords.getRelativeCharacterSize(characterSize);
 
-    m_newGame.setCharacterSize(resumeCharacterSize);
-    m_newGame.setPosition(coords.getRelativePoint({0.275f, 0.425f}));
-    m_newGame.setParagraphWidth(paragraphWidth);
-    m_newGame.setPadding(paddingSize);
+    m_tutoButton.setCharacterSize(resumeCharacterSize);
+    m_tutoButton.setPosition(coords.getRelativePoint({0.275f, 0.425f}));
+    m_tutoButton.setParagraphWidth(paragraphWidth);
+    m_tutoButton.setPadding(paddingSize);
 
-    m_continue.setCharacterSize(resumeCharacterSize);
-    m_continue.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
-    m_continue.setParagraphWidth(paragraphWidth);
-    m_continue.setPadding(paddingSize);
-
-    m_credits.setCharacterSize(resumeCharacterSize);
-    m_credits.setPosition(coords.getRelativePoint({0.275f, 0.425f + (characterSize + spaceBetweenButton) * 2}));
-    m_credits.setParagraphWidth(paragraphWidth);
-    m_credits.setPadding(paddingSize);
-
-    m_quit.setCharacterSize(resumeCharacterSize);
-    m_quit.setPosition(coords.getRelativePoint({0.275f, 0.425f + (characterSize + spaceBetweenButton) * 3}));
-    m_quit.setParagraphWidth(paragraphWidth);
-    m_quit.setPadding(paddingSize);
+    m_level1.setCharacterSize(resumeCharacterSize);
+    m_level1.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
+    m_level1.setParagraphWidth(paragraphWidth);
+    m_level1.setPadding(paddingSize);
 
     m_widgets.render(target, states);
+    m_menuTitleEntity.render(target,states);
   }
 
-  void MenuScene::doShow() {
+  void SelectLevelScene::doShow() {
     m_widgets.clear();
 
-    m_newGame.setDefault();
-    m_widgets.addWidget(m_newGame);
+    m_tutoButton.setDefault();
+    m_widgets.addWidget(m_tutoButton);
 
-    m_continue.setDefault();
-    m_widgets.addWidget(m_continue);
-
-    m_credits.setDefault();
-    m_widgets.addWidget(m_credits);
-
-    m_quit.setDefault();
-    m_widgets.addWidget(m_quit);
+    m_level1.setDefault();
+    m_widgets.addWidget(m_level1);
 
     m_widgets.selectNextWidget();
   }

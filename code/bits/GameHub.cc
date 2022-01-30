@@ -14,6 +14,8 @@ namespace hg {
   , level(*this)
   , menu(*this)
   , quit(*this)
+  , select(*this)
+  , credits(*this)
   {
     pushScene(start);
   }

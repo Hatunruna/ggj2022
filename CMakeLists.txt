@@ -40,6 +40,10 @@ add_executable(${GAME}
   code/bits/QuitScene.cc
   code/bits/LevelState.cc
   code/bits/LeverEntity.cc
+  code/bits/SelectLevelScene.cc
+  code/bits/CreditEntity.cc
+  code/bits/CreditScene.cc
+
 )
 
 target_include_directories(${GAME}

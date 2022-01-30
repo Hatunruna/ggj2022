@@ -20,6 +20,7 @@ namespace hg {
     m_startAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::X);
     m_startAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::Y);
     m_startAction.addKeycodeKeyControl(gf::Keycode::Space);
+    m_startAction.addMouseButtonControl(gf::MouseButton::Left);
     addAction(m_startAction);
 
 //     m_fullscreenAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::Guide);

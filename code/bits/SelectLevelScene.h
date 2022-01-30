@@ -1,5 +1,5 @@
-#ifndef HG_MENU_SCENE_H
-#define HG_MENU_SCENE_H
+#ifndef HG_SELECT_MENU_SCENE_H
+#define HG_SELECT_MENU_SCENE_H
 
 #include <gf/Scene.h>
 #include <gf/Action.h>
@@ -7,15 +7,14 @@
 #include <gf/WidgetContainer.h>
 #include <gf/Widgets.h>
 #include <gf/Event.h>
-#include <gf/Text.h>
 
 namespace hg {
 
   struct GameHub;
 
-  class MenuScene : public gf::Scene {
+  class SelectLevelScene : public gf::Scene {
   public:
-    MenuScene(GameHub& game);
+      SelectLevelScene(GameHub& game);
 
   private:
     void doProcessEvent(gf::Event& event) override;
@@ -31,14 +30,13 @@ namespace hg {
     gf::Action m_downAction;
     gf::Action m_triggerAction;
 
-    gf::TextButtonWidget m_newGame;
-    gf::TextButtonWidget m_continue;
-    gf::TextButtonWidget m_credits;
-    gf::TextButtonWidget m_quit;
+    MenuTitleEntity m_menuTitleEntity;
 
     gf::WidgetContainer m_widgets;
+    gf::TextButtonWidget m_tutoButton;
+    gf::TextButtonWidget m_level1;
   };
 
 }
 
-#endif // HG_MENU_SCENE_H
+#endif // HG_SELECT_MENU_SCENE_H

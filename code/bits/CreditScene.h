@@ -1,9 +1,10 @@
-#ifndef HG_MENU_SCENE_H
-#define HG_MENU_SCENE_H
+#ifndef HG_CREDIT_SCENE_H
+#define HG_CREDIT_SCENE_H
+
+#include "CreditEntity.h"
 
 #include <gf/Scene.h>
 #include <gf/Action.h>
-#include "MenuTitleEntity.h"
 #include <gf/WidgetContainer.h>
 #include <gf/Widgets.h>
 #include <gf/Event.h>
@@ -13,9 +14,9 @@ namespace hg {
 
   struct GameHub;
 
-  class MenuScene : public gf::Scene {
+  class CreditScene : public gf::Scene {
   public:
-    MenuScene(GameHub& game);
+      CreditScene(GameHub& game);
 
   private:
     void doProcessEvent(gf::Event& event) override;
@@ -25,20 +26,18 @@ namespace hg {
 
   private:
     GameHub& m_game;
+
     gf::Action m_quitAction;
+    gf::Action m_triggerAction;
+    gf::TextButtonWidget m_quitButton;
+    gf::WidgetContainer m_widgets;
 
     gf::Action m_upAction;
     gf::Action m_downAction;
-    gf::Action m_triggerAction;
 
-    gf::TextButtonWidget m_newGame;
-    gf::TextButtonWidget m_continue;
-    gf::TextButtonWidget m_credits;
-    gf::TextButtonWidget m_quit;
-
-    gf::WidgetContainer m_widgets;
+    CreditEntity m_creditEntity;
   };
 
 }
 
-#endif // HG_MENU_SCENE_H
+#endif // HG_CREDIT_SCENE_H
