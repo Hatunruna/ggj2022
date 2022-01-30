@@ -23,7 +23,8 @@ namespace hg {
     m_startAction.addMouseButtonControl(gf::MouseButton::Left);
     addAction(m_startAction);
 
-//     m_fullscreenAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::Guide);
+    m_fullscreenAction.addGamepadButtonControl(gf::AnyGamepad, gf::GamepadButton::Guide);
+    m_fullscreenAction.addKeycodeKeyControl(gf::Keycode::F);
     addAction(m_fullscreenAction);
 
     addHudEntity(m_titleEntity);
