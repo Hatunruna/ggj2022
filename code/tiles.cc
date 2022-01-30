@@ -343,7 +343,8 @@ int main() {
   base.saveToFile("28-empty.png");
   base.saveToFile("29-empty.png");
   base.saveToFile("30-empty.png");
-  base.saveToFile("31-empty.png");
+
+  makeSink(gf::Color::Gray(), "31-button.png");
 
   // cables
 

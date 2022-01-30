@@ -10,6 +10,30 @@ namespace hg {
 
   namespace {
 
+    enum LayerName {
+      Platforms,
+      Cables,
+      Lifts,
+    };
+
+    LayerName toLayerName(const std::string& name) {
+      if (name == "platforms") {
+        return LayerName::Platforms;
+      }
+
+      if (name == "cables") {
+        return LayerName::Cables;
+      }
+
+      if (name == "lifts") {
+        return LayerName::Lifts;
+      }
+
+      gf::Log::debug("Unknown layer: %s\n", name.c_str());
+      assert(false);
+      return LayerName::Platforms;
+    }
+
     class LayersDataMaker : public gf::TmxVisitor {
     public:
       LayersDataMaker(LevelData& data)
@@ -22,9 +46,7 @@ namespace hg {
           return;
         }
 
-        if (layer.name != "platforms") {
-          return;
-        }
+        auto name = toLayerName(layer.name);
 
         int k = 0;
 
@@ -45,9 +67,26 @@ namespace hg {
           assert(tileset);
           gid = gid - tileset->firstGid;
 
-          assert(m_data.tiles.isValid(gf::vec(i, j)));
-          assert(m_data.tiles(gf::vec(i, j)) == PlatformType::None);
-          m_data.tiles(gf::vec(i, j)) = static_cast<PlatformType>(gid);
+          switch (name) {
+            case LayerName::Platforms:
+              assert(m_data.platform_tiles.isValid(gf::vec(i, j)));
+              assert(m_data.platform_tiles(gf::vec(i, j)) == PlatformType::None);
+              assert(0 <= gid && gid <= 31);
+              m_data.platform_tiles(gf::vec(i, j)) = static_cast<PlatformType>(gid);
+              break;
+            case LayerName::Cables:
+              assert(m_data.cable_tiles.isValid(gf::vec(i, j)));
+              assert(m_data.cable_tiles(gf::vec(i, j)) == CableType::None);
+              assert(32 <= gid && gid <= 43);
+              m_data.cable_tiles(gf::vec(i, j)) = static_cast<CableType>(gid);
+              break;
+            case LayerName::Lifts:
+              assert(m_data.lift_tiles.isValid(gf::vec(i, j)));
+              assert(m_data.lift_tiles(gf::vec(i, j)) == LiftType::None);
+              assert(44 <= gid && gid <= 46);
+              m_data.lift_tiles(gf::vec(i, j)) = static_cast<LiftType>(gid);
+              break;
+          }
         }
       }
 
@@ -81,10 +120,25 @@ namespace hg {
       return platform;
     }
 
+    LiftData makeLift(const gf::Array2D<LiftType, int>& tiles, gf::Vector2i start) {
+      LiftData lift;
+      lift.segment.p0 = lift.segment.p1 = start;
+
+      do {
+        ++lift.segment.p1.y;
+        assert(tiles.isValid(lift.segment.p1));
+        assert(tiles(lift.segment.p1) == LiftType::Lift_V || tiles(lift.segment.p1) == LiftType::Lift_D);
+      } while (tiles(lift.segment.p1) != LiftType::Lift_D);
+
+      return lift;
+    }
+
   }
 
   LevelData::LevelData()
-  : tiles(LevelSize, PlatformType::None)
+  : platform_tiles(LevelSize, PlatformType::None)
+  , cable_tiles(LevelSize, CableType::None)
+  , lift_tiles(LevelSize, LiftType::None)
   {
   }
 
@@ -93,25 +147,25 @@ namespace hg {
     LayersDataMaker maker(data);
     tmx.visitLayers(maker);
 
-    for (auto position : data.tiles.getPositionRange()) {
-      switch (data.tiles(position)) {
+    for (auto position : data.platform_tiles.getPositionRange()) {
+      switch (data.platform_tiles(position)) {
         case PlatformType::Neutral_HL:
-          data.platforms.push_back(makeHorizontalPlatform(data.tiles, position, PlatformType::Neutral_HR, PlatformType::Neutral_H));
+          data.platforms.push_back(makeHorizontalPlatform(data.platform_tiles, position, PlatformType::Neutral_HR, PlatformType::Neutral_H));
           break;
         case PlatformType::Red_HL:
-          data.platforms.push_back(makeHorizontalPlatform(data.tiles, position, PlatformType::Red_HR, PlatformType::Red_H));
+          data.platforms.push_back(makeHorizontalPlatform(data.platform_tiles, position, PlatformType::Red_HR, PlatformType::Red_H));
           break;
         case PlatformType::Blue_HL:
-          data.platforms.push_back(makeHorizontalPlatform(data.tiles, position, PlatformType::Blue_HR, PlatformType::Blue_H));
+          data.platforms.push_back(makeHorizontalPlatform(data.platform_tiles, position, PlatformType::Blue_HR, PlatformType::Blue_H));
           break;
         case PlatformType::Neutral_VU:
-          data.platforms.push_back(makeVerticalPlatform(data.tiles, position, PlatformType::Neutral_VD, PlatformType::Neutral_V));
+          data.platforms.push_back(makeVerticalPlatform(data.platform_tiles, position, PlatformType::Neutral_VD, PlatformType::Neutral_V));
           break;
         case PlatformType::Red_VU:
-          data.platforms.push_back(makeVerticalPlatform(data.tiles, position, PlatformType::Red_VD, PlatformType::Red_V));
+          data.platforms.push_back(makeVerticalPlatform(data.platform_tiles, position, PlatformType::Red_VD, PlatformType::Red_V));
           break;
         case PlatformType::Blue_VU:
-          data.platforms.push_back(makeVerticalPlatform(data.tiles, position, PlatformType::Blue_VD, PlatformType::Blue_V));
+          data.platforms.push_back(makeVerticalPlatform(data.platform_tiles, position, PlatformType::Blue_VD, PlatformType::Blue_V));
           break;
         case PlatformType::Red_Start:
           data.hanz = position;
@@ -121,6 +175,20 @@ namespace hg {
           data.gret = position;
           gf::Log::debug("Gret: %i,%i\n", position.x, position.y);
           break;
+        case PlatformType::Button_P: {
+          ButtonData button;
+          button.type = ButtonType::Platform;
+          button.position = position;
+          data.buttons.push_back(button);
+          break;
+        }
+        case PlatformType::Button_L: {
+          ButtonData button;
+          button.type = ButtonType::Lift;
+          button.position = position;
+          data.buttons.push_back(button);
+          break;
+        }
       }
     }
 
@@ -135,6 +203,22 @@ namespace hg {
     data.limits.push_back({ gf::vec(0,0), gf::vec(31, 0) });
     data.limits.push_back({ gf::vec(0, 31), gf::vec(31,31) });
     data.limits.push_back({ gf::vec(31, 0), gf::vec(31,31) });
+
+    // lifts
+
+    for (auto position : data.lift_tiles.getPositionRange()) {
+      if (data.lift_tiles(position) == LiftType::Lift_U) {
+        data.lifts.push_back(makeLift(data.lift_tiles, position));
+      }
+    }
+
+    gf::Log::debug("Number of lifts: %zu\n", data.lifts.size());
+
+    for (auto & button : data.buttons) {
+
+    }
+
+    gf::Log::debug("Number of buttons: %zu\n", data.buttons.size());
 
     return data;
   }

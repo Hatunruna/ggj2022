@@ -3,19 +3,19 @@
  <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32" spacing="2" margin="1" tilecount="64" columns="8">
   <image source="tileset.png" width="272" height="272"/>
  </tileset>
- <layer id="3" name="lift" width="32" height="32">
+ <layer id="3" name="lifts" width="32" height="32">
   <data encoding="base64" compression="zlib">
    eJztzUENADAIBLAztOHfHRL2JGGtgSYAe9Twf/x+/7f/Hf4B4KUB3L0Bxg==
   </data>
  </layer>
  <layer id="2" name="cables" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJzt0LEJACEURMHfioqJ9t+fBoLhXSIGzsDGDzYCAACAP/pcXisX+vVC83Q/xf70a+1A/yUDXCQCfA==
+   eJxjYBgFo2AUjIJRMApGwSgYBZQClQG2X3WE268DxEpQrDnAblFD44+mDfoBbQZEOoBhLRraoYwmRw+/4rMDPe3R235ygSIDZrzhwtSOz5EGAOWhBT8=
   </data>
  </layer>
  <layer id="1" name="platforms" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJzt17kOgCAQRdFRG5fGfYH//0+hI0TUIM4Y815yW04xFZqINqG0SZHcFHz48OHDhw8f/oN1pj7QwODH7Kv+yOz7t1sofLM3fH9TovczU35QweRf7W9+KehXpjpQw+DHzPXXl/z2pu9uTuifzdr2Dyz5/94BfJAOrQ==
+   eJzt17kOgCAQRdFRG9TGfYHG//9KoSMERBEGY+YmryAhOQUVAgD2TBNyHPLFySeffPLJJ5988l/Uyw2OjQh+SF/1J2TffLsV3G/2tMM4M4tvNkeyC7nSsgrJ9/U3n/mvJPNrucaxFsEPSfe3RH5309dbIvpXKVv9gXP+v081Hw7V
   </data>
  </layer>
 </map>

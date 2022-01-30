@@ -3,13 +3,15 @@
 
 #include <vector>
 
+#include <gf/Vector.h>
+
 #include "Hero.h"
 #include "GameData.h"
 
 namespace hg {
 
   struct PlatformState {
-    HeroColor color; 
+    HeroColor color;
   };
 
   struct LevelState {
