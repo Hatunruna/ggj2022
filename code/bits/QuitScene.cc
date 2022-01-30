@@ -15,6 +15,7 @@ namespace hg {
   , m_downAction("DownAction")
   , m_triggerAction("TriggerAction")
   , m_resumeButton("Resume game", game.resources.getFont("Underdog.otf"))
+  , m_restartButton("Restart level", game.resources.getFont("Underdog.otf"))
   , m_quitButton("Quit", game.resources.getFont("Underdog.otf"))
   , m_theme(game.audio.getMusic("theme.ogg"))
   {
@@ -49,6 +50,13 @@ namespace hg {
     };
 
     setupButton(m_resumeButton, [&] () {gf::Log::debug("Resume button pressed!\n"); m_game.popScene(); });
+
+    setupButton(m_restartButton, [&] () {
+      gf::Log::debug("Restart game\n");
+      m_game.level.loadLevel(m_game.data, m_game.state.levelIndex);
+      m_game.popScene();
+    });
+
     setupButton(m_quitButton, [&] () {
       gf::Log::debug("Quit button pressed!\n");
       m_game.replaceAllScenes(m_game.start);
@@ -88,7 +96,7 @@ namespace hg {
   void QuitScene::doRender(gf::RenderTarget& target, const gf::RenderStates &states) {
     constexpr float characterSize = 0.075f;
     constexpr float spaceBetweenButton = 0.05f;
-    constexpr gf::Vector2f backgroundSize(0.5f, 0.3f);
+    constexpr gf::Vector2f backgroundSize(0.5f, 0.45f);
 
     target.setView(getHudView());
 
@@ -107,12 +115,19 @@ namespace hg {
     background.draw(target, states);
 
     m_resumeButton.setCharacterSize(resumeCharacterSize);
-    m_resumeButton.setPosition(coords.getRelativePoint({0.275f, 0.425f}));
+    m_resumeButton.setPosition(coords.getRelativePoint({0.275f, 0.375f}));
     m_resumeButton.setParagraphWidth(paragraphWidth);
     m_resumeButton.setPadding(paddingSize);
 
+    constexpr float offset = characterSize + spaceBetweenButton;
+
+    m_restartButton.setCharacterSize(resumeCharacterSize);
+    m_restartButton.setPosition(coords.getRelativePoint({0.275f, 0.375f + offset}));
+    m_restartButton.setParagraphWidth(paragraphWidth);
+    m_restartButton.setPadding(paddingSize);
+
     m_quitButton.setCharacterSize(resumeCharacterSize);
-    m_quitButton.setPosition(coords.getRelativePoint({0.275f, 0.425f + characterSize + spaceBetweenButton}));
+    m_quitButton.setPosition(coords.getRelativePoint({0.275f, 0.375f + 2.0f * offset }));
     m_quitButton.setParagraphWidth(paragraphWidth);
     m_quitButton.setPadding(paddingSize);
 
@@ -124,6 +139,9 @@ namespace hg {
 
     m_resumeButton.setDefault();
     m_widgets.addWidget(m_resumeButton);
+
+    m_restartButton.setDefault();
+    m_widgets.addWidget(m_restartButton);
 
     m_quitButton.setDefault();
     m_widgets.addWidget(m_quitButton);

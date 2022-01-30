@@ -33,6 +33,7 @@ namespace hg {
 
     gf::WidgetContainer m_widgets;
     gf::TextButtonWidget m_resumeButton;
+    gf::TextButtonWidget m_restartButton;
     gf::TextButtonWidget m_quitButton;
 
     sf::Music& m_theme;
