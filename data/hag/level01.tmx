@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="1">
+ <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32" spacing="2" margin="1" tilecount="64" columns="8">
+  <image source="tileset.png" width="272" height="272"/>
+ </tileset>
+ <layer id="3" name="lifts" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20PBxQAAADwbhAAAAE=
+  </data>
+ </layer>
+ <layer id="2" name="cables" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjILhB1QG2H7VUfspBtpArEQmVkdiK5NpPyV+oIb/R6L9igzY45BUrEWB22FgOOShUfuHrv1qA2z/KBgFo2D4AgCnZAd4
+  </data>
+ </layer>
+ <layer id="1" name="platforms" width="32" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzt17sOgCAMBdCqi4/Fx6Iy+P9/aRlcEGIJtFXiTe7CckIhRgwAbEo12B30sr/MP5T8Cls7bQR9rcT414zcuYTWc/scKdmfsDN2UfIpKcGnzJnTp6ZV9n2J8VPm3GF77JDgcyTk+85K0peKz0855xy+ZDj90J2X8il58il74PS58/t3P+V/MpQvfP9XQXf0+Bqxtn0Da76/T8koDiY=
+  </data>
+ </layer>
+</map>
