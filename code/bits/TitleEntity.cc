@@ -10,9 +10,9 @@ namespace hg {
 
   TitleEntity::TitleEntity(gf::ResourceManager& resources, AudioManager& audio)
   : m_font(resources.getFont("Underdog.otf"))
-//   , m_backgroundTexture(resources.getTexture("logo.png"))
+  , m_backgroundTexture(resources.getTexture("title.png"))
   {
-
+    m_backgroundTexture.setSmooth(true);
   }
 
   void TitleEntity::update([[maybe_unused]] gf::Time time) {
@@ -21,21 +21,20 @@ namespace hg {
   void TitleEntity::render(gf::RenderTarget &target, const gf::RenderStates &states) {
     gf::Coordinates coords(target);
 
-//     float backgroundHeight = coords.getRelativeSize(gf::vec(0.0f, 0.8f)).height;
-//     float backgroundScale = backgroundHeight / m_backgroundTexture.getSize().height;
-//
-//     gf::Sprite background(m_backgroundTexture);
-//     background.setColor(gf::Color::Opaque(0.25));
-//     background.setPosition(coords.getCenter());
-//     background.setAnchor(gf::Anchor::Center);
-//     background.setScale(backgroundScale);
-//     target.draw(background, states);
+    float backgroundHeight = coords.getRelativeSize(gf::vec(0.0f, 1.0f)).height;
+    float backgroundScale = backgroundHeight / m_backgroundTexture.getSize().height;
+
+    gf::Sprite background(m_backgroundTexture);
+    background.setPosition(coords.getCenter());
+    background.setAnchor(gf::Anchor::Center);
+    background.setScale(backgroundScale);
+    target.draw(background, states);
 
     unsigned titleCharacterSize = coords.getRelativeCharacterSize(0.1f);
 
     gf::Text title("Hanz and Gret", m_font, titleCharacterSize);
     title.setColor(gf::Color::White);
-    title.setPosition(coords.getCenter());
+    title.setPosition(coords.getRelativePoint({ 0.5f, 0.1f }));
     title.setAnchor(gf::Anchor::Center);
     target.draw(title, states);
 
@@ -43,7 +42,7 @@ namespace hg {
 
     gf::Text subtitle("Escape the lab", m_font, subtitleCharacterSize);
     subtitle.setColor(gf::Color::White);
-    subtitle.setPosition(coords.getRelativePoint({ 0.5f, 0.6f }));
+    subtitle.setPosition(coords.getRelativePoint({ 0.5f, 0.2f }));
     subtitle.setAnchor(gf::Anchor::Center);
     target.draw(subtitle, states);
 
