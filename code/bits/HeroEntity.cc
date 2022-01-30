@@ -166,6 +166,7 @@ namespace hg {
       m_elapsedTime = gf::seconds(0.0f);
       m_state = HeroState::Activate;
       m_runSound.stop();
+      m_moveDirection = gf::Direction::Center;
     }
   }
 
