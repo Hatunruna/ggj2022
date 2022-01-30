@@ -100,7 +100,7 @@ namespace hg {
     }
   }
 
-  void PhysicsModel::switchColor(std::size_t index) {
+  void PhysicsModel::switchPlatform(std::size_t index) {
     assert(index < m_static.size());
     auto & body = m_static[index];
 

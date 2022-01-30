@@ -2,6 +2,8 @@
 
 #include <cassert>
 
+#include <gf/RenderTarget.h>
+#include <gf/Sprite.h>
 #include <gf/VectorOps.h>
 
 #include "Constants.h"
@@ -33,6 +35,8 @@ namespace hg {
   : m_data(data)
   , m_state(state)
   , m_physics(physics)
+  , m_platformButton(resources.getTexture("button.png"))
+  , m_liftButton(resources.getTexture("button.png"))
   {
   }
 
@@ -57,7 +61,7 @@ namespace hg {
         case ButtonType::Platform: {
           PlatformState& state = m_state.level.platforms[button.index];
           state.color = changeColor(state.color);
-          m_physics.switchColor(button.index);
+          m_physics.switchPlatform(button.index);
           break;
         }
         case ButtonType::Lift:
@@ -77,7 +81,30 @@ namespace hg {
   }
 
   void ButtonsEntity::render(gf::RenderTarget &target, const gf::RenderStates &states) {
+    assert(m_state.levelIndex  < m_data.levels.size());
+    auto & data = m_data.levels[m_state.levelIndex];
 
+    for (auto & button : data.buttons) {
+      switch (button.type) {
+        case ButtonType::Platform: {
+          gf::Sprite sprite(m_platformButton);
+          sprite.setPosition(button.position * TileSize + TileSize / 2);
+          sprite.setAnchor(gf::Anchor::Center);
+          target.draw(sprite, states);
+          break;
+        }
+        case ButtonType::Lift: {
+          gf::Sprite sprite(m_liftButton);
+          sprite.setPosition(button.position * TileSize + TileSize / 2);
+          sprite.setAnchor(gf::Anchor::Center);
+          target.draw(sprite, states);
+          break;
+        }
+        default:
+          assert(false);
+          break;
+      }
+    }
   }
 
 }

@@ -3,6 +3,7 @@
 
 #include <gf/Entity.h>
 #include <gf/ResourceManager.h>
+#include <gf/Texture.h>
 
 #include "Hero.h"
 
@@ -25,6 +26,9 @@ namespace hg {
     const GameData& m_data;
     GameState& m_state;
     PhysicsModel& m_physics;
+
+    gf::Texture& m_platformButton;
+    gf::Texture& m_liftButton;
   };
 
 }

@@ -73,6 +73,7 @@ namespace hg {
     addModel(m_physics);
 
     addWorldEntity(m_layer);
+    addWorldEntity(m_buttons);
     addWorldEntity(m_hanz);
     addWorldEntity(m_gret);
   }
