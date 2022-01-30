@@ -146,7 +146,11 @@ namespace hg {
       break;
     }
 
-    m_physics.setDirection(m_hero, direction);
+    if (m_state != HeroState::Activate && m_state != HeroState::Land) {
+      m_physics.setDirection(m_hero, direction);
+    } else {
+      m_physics.setDirection(m_hero, gf::Direction::Center);
+    }
   }
 
   void HeroEntity::jump() {
@@ -166,7 +170,6 @@ namespace hg {
       m_elapsedTime = gf::seconds(0.0f);
       m_state = HeroState::Activate;
       m_runSound.stop();
-      m_moveDirection = gf::Direction::Center;
     }
   }
 
