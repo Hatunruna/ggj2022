@@ -2,6 +2,7 @@
 #define HG_LAYER_ENTITY_H
 
 #include <gf/Entity.h>
+#include <gf/ResourceManager.h>
 
 namespace hg {
 
@@ -11,7 +12,7 @@ namespace hg {
 
   class LayerEntity : public gf::Entity {
   public:
-    LayerEntity(const GameData& data, GameScenery& scenery, const GameState& state);
+    LayerEntity(gf::ResourceManager& resources, const GameData& data, GameScenery& scenery, const GameState& state);
     void update(gf::Time time) override;
     void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
 
@@ -19,6 +20,7 @@ namespace hg {
     const GameData& m_data;
     GameScenery& m_scenery;
     const GameState& m_state;
+    gf::Texture& m_backgroundTexture;
   };
 
 

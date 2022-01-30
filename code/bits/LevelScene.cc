@@ -26,7 +26,7 @@ namespace hg {
   , m_gretRunRightAction("gretRunRight")
   , m_gretJumpAction("gretJump")
   , m_gretActivateAction("gretActivate")
-  , m_layer(game.data, game.scenery, game.state)
+  , m_layer(game.resources, game.data, game.scenery, game.state)
   , m_hanz(game.resources, m_physics, game.audio, Hero::Hanz)
   , m_gret(game.resources, m_physics, game.audio, Hero::Gret)
   {

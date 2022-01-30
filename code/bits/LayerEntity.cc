@@ -5,6 +5,7 @@
 #include <gf/Color.h>
 #include <gf/RenderTarget.h>
 #include <gf/Shapes.h>
+#include <gf/Sprite.h>
 
 #include "Constants.h"
 #include "GameData.h"
@@ -13,10 +14,11 @@
 
 namespace hg {
 
-  LayerEntity::LayerEntity(const GameData& data, GameScenery& scenery, const GameState& state)
+  LayerEntity::LayerEntity(gf::ResourceManager& resources, const GameData& data, GameScenery& scenery, const GameState& state)
   : m_data(data)
   , m_scenery(scenery)
   , m_state(state)
+  , m_backgroundTexture(resources.getTexture("stage-background.jpg"))
   {
   }
 
@@ -24,6 +26,10 @@ namespace hg {
   }
 
   void LayerEntity::render(gf::RenderTarget &target, const gf::RenderStates &states) {
+    gf::Sprite background;
+    background.setTexture(m_backgroundTexture);
+    target.draw(background, states);
+
     assert(m_state.levelIndex < m_data.levels.size());
     const LevelData& data = m_data.levels[m_state.levelIndex];
 
