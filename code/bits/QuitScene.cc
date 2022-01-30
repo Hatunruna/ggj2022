@@ -16,7 +16,7 @@ namespace hg {
   , m_triggerAction("TriggerAction")
   , m_resumeButton("Resume game", game.resources.getFont("Underdog.otf"))
   , m_restartButton("Restart level", game.resources.getFont("Underdog.otf"))
-  , m_quitButton("Quit", game.resources.getFont("Underdog.otf"))
+  , m_quitButton("Main menu", game.resources.getFont("Underdog.otf"))
   , m_theme(game.audio.getMusic("theme.ogg"))
   {
     setClearColor(gf::Color::Black);
@@ -59,7 +59,7 @@ namespace hg {
 
     setupButton(m_quitButton, [&] () {
       gf::Log::debug("Quit button pressed!\n");
-      m_game.replaceAllScenes(m_game.start);
+      m_game.replaceAllScenes(m_game.menu);
       // TODO: dirty hack
       m_game.level.stopMusic();
       m_theme.play();
