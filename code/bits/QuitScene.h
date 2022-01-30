@@ -7,6 +7,8 @@
 #include <gf/WidgetContainer.h>
 #include <gf/Widgets.h>
 
+#include <SFML/Audio.hpp>
+
 namespace hg {
 
   struct GameHub;
@@ -32,6 +34,8 @@ namespace hg {
     gf::WidgetContainer m_widgets;
     gf::TextButtonWidget m_resumeButton;
     gf::TextButtonWidget m_quitButton;
+
+    sf::Music& m_theme;
   };
 
 }

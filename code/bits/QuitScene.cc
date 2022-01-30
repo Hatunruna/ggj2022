@@ -16,6 +16,7 @@ namespace hg {
   , m_triggerAction("TriggerAction")
   , m_resumeButton("Resume game", game.resources.getFont("Underdog.otf"))
   , m_quitButton("Quit", game.resources.getFont("Underdog.otf"))
+  , m_theme(game.audio.getMusic("theme.ogg"))
   {
     setClearColor(gf::Color::Black);
 
@@ -52,6 +53,7 @@ namespace hg {
       m_game.replaceAllScenes(m_game.start);
       // TODO: dirty hack
       m_game.level.stopMusic();
+      m_theme.play();
     });
   }
 

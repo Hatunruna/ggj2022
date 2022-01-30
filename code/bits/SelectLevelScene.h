@@ -35,6 +35,8 @@ namespace hg {
     gf::WidgetContainer m_widgets;
     gf::TextButtonWidget m_tutoButton;
     gf::TextButtonWidget m_level1;
+
+    sf::Music& m_theme;
   };
 
 }

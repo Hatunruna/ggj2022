@@ -16,6 +16,7 @@ namespace hg {
   , m_menuTitleEntity(game.resources, game.audio)
   , m_tutoButton("Tuto", game.resources.getFont("Underdog.otf"))
   , m_level1("Level 1", game.resources.getFont("Underdog.otf"))
+  , m_theme(game.audio.getMusic("theme.ogg"))
   {
     setClearColor(gf::Color::Black);
     addHudEntity(m_menuTitleEntity);
@@ -55,12 +56,14 @@ namespace hg {
     setupButton(m_tutoButton, [&] () {
       gf::Log::debug("Tuto button pressed!\n");
       m_game.level.loadLevel(m_game.data, m_game.state.levelIndex);
+      m_theme.stop();
       m_game.replaceAllScenes(m_game.level);
     });
 
     setupButton(m_level1, [&] () {
       gf::Log::debug("Level 1 button pressed!\n");
       m_game.level.loadLevel(m_game.data, m_game.state.levelIndex);
+      m_theme.stop();
       m_game.replaceAllScenes(m_game.level);
     });
   }

@@ -12,6 +12,7 @@ namespace hg {
   , m_startAction("Start")
   , m_fullscreenAction("Fullscreen")
   , m_titleEntity(game.resources, game.audio)
+  , m_theme(game.audio.getMusic("theme.ogg"))
   {
     setClearColor(gf::Color::Black);
 
@@ -28,6 +29,9 @@ namespace hg {
     addAction(m_fullscreenAction);
 
     addHudEntity(m_titleEntity);
+
+    m_theme.setLoop(true);
+    m_theme.play();
   }
 
   void StartScene::doHandleActions([[maybe_unused]] gf::Window& window) {

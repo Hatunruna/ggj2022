@@ -4,6 +4,8 @@
 #include <gf/Scene.h>
 #include <gf/Action.h>
 
+#include <SFML/Audio.hpp>
+
 #include "TitleEntity.h"
 
 namespace hg {
@@ -24,6 +26,8 @@ namespace hg {
     gf::Action m_fullscreenAction;
 
     TitleEntity m_titleEntity;
+
+    sf::Music& m_theme;
   };
 
 }
