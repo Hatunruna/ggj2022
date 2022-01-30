@@ -165,7 +165,8 @@ namespace hg {
     if (m_game.state.levelIndex == m_game.data.levels.size() - 1) {
       m_game.replaceAllScenes(m_game.select);
     } else {
-      // TODO: load next level
+      m_game.state.levelIndex++;
+      loadLevel(m_game.data, m_game.state.levelIndex);
     }
   }
 
