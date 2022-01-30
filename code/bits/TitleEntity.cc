@@ -50,6 +50,8 @@ namespace hg {
 
     gf::Text instructions("Press a button to start", m_font, instructionsCharacterSize);
     instructions.setColor(gf::Color::White);
+    instructions.setOutlineColor(gf::Color::Black);
+    instructions.setOutlineThickness(instructionsCharacterSize * 0.05f);
     instructions.setPosition(coords.getRelativePoint({ 0.5f, 0.9f }));
     instructions.setAnchor(gf::Anchor::Center);
     target.draw(instructions, states);
