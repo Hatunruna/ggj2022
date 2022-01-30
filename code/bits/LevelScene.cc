@@ -3,6 +3,7 @@
 #include <gf/Log.h>
 #include <gf/Color.h>
 
+#include "Constants.h"
 #include "GameHub.h"
 
 namespace hg {
@@ -139,6 +140,31 @@ namespace hg {
       m_gret.setDirection(gf::Direction::Right);
     } else {
       m_gret.setDirection(gf::Direction::Center);
+    }
+  }
+
+  void LevelScene::doUpdate(gf::Time time) {
+    assert(m_game.state.levelIndex < m_game.data.levels.size());
+    const LevelData& levelData = m_game.data.levels[m_game.state.levelIndex];
+
+    auto reachedExit = [this, &levelData](Hero hero) {
+      auto heroPos = m_physics.getPosition(hero);
+      auto exitPos = gf::Vector2f(levelData.exit * TileSize);
+      float distance = gf::euclideanDistance(heroPos, exitPos);
+
+      return distance < TileSize.width /*&& heroPos.y == exitPos.y*/;
+    };
+
+    if (reachedExit(Hero::Hanz) && reachedExit(Hero::Gret)) {
+      nextLevel();
+    }
+  }
+
+  void LevelScene::nextLevel() {
+    if (m_game.state.levelIndex == m_game.data.levels.size() - 1) {
+      m_game.replaceAllScenes(m_game.select);
+    } else {
+      // TODO: load next level
     }
   }
 

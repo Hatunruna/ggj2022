@@ -27,6 +27,9 @@ namespace hg {
   private:
     void onActivityChange(bool active) override;
     void doHandleActions(gf::Window& window) override;
+    void doUpdate(gf::Time time) override;
+
+    void nextLevel();
 
   private:
     GameHub& m_game;
