@@ -58,6 +58,7 @@ namespace hg {
   , m_landTexture(getHeroTexture(resources, "land.png", hero))
   , m_jumpSound(getHeroSound(audio, "jump.ogg", hero))
   , m_landSound(audio.getSound("land.ogg"))
+  , m_runSound(getHeroSound(audio, "run.ogg", hero))
   , m_facedDirection(gf::Direction::Left)
   , m_moveDirection(gf::Direction::Center)
   {
@@ -78,7 +79,9 @@ namespace hg {
 
     // Set audio volume
     m_jumpSound.setVolume(10.0f);
-    m_landSound.setVolume(10.0f);
+    m_landSound.setVolume(33.0f);
+    m_runSound.setVolume(33.0f);
+    m_runSound.setLoop(true);
   }
 
   void HeroEntity::setDirection(gf::Direction direction) {
@@ -91,6 +94,7 @@ namespace hg {
         m_moveDirection = direction;
         m_facedDirection = direction;
 
+        m_runSound.play();
         m_state = HeroState::Run;
       }
       // TODO: activate
@@ -100,6 +104,7 @@ namespace hg {
     case HeroState::Run:
       if (!m_physics.isColliding(m_hero)) {
         m_fallAnimation.reset();
+        m_runSound.stop();
         m_state = HeroState::Fall;
       } else if (direction == gf::Direction::Left || direction == gf::Direction::Right) {
         m_moveDirection = direction;
@@ -108,6 +113,7 @@ namespace hg {
         m_moveDirection = direction;
 
         m_state = HeroState::Pause;
+        m_runSound.stop();
         m_runAnimation.reset();
       }
       // TODO: activate
@@ -144,6 +150,7 @@ namespace hg {
       if (m_physics.jump(m_hero)) {
         m_jumpAnimation.reset();
         m_state = HeroState::Jump;
+        m_runSound.stop();
         m_jumpSound.play();
       }
     }

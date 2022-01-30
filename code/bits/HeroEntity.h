@@ -56,6 +56,7 @@ namespace hg {
     // Audio
     sf::Sound m_jumpSound;
     sf::Sound m_landSound;
+    sf::Sound m_runSound;
 
     // Actions
     gf::Direction m_facedDirection; // To handle pause position
