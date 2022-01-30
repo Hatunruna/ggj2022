@@ -29,6 +29,7 @@ namespace hg {
   , m_layer(game.resources, game.data, game.scenery, game.state)
   , m_hanz(game.resources, m_physics, game.audio, Hero::Hanz)
   , m_gret(game.resources, m_physics, game.audio, Hero::Gret)
+  , m_buttons(game.resources, game.data, game.state, m_physics)
   {
     setWorldViewCenter(WorldSize / 2);
     setWorldViewSize(WorldSize);
@@ -113,6 +114,7 @@ namespace hg {
     if (m_hanzJumpAction.isActive()) {
       m_hanz.jump();
     } else if (m_hanzActivateAction.isActive()) {
+      m_buttons.activate(Hero::Hanz);
       m_hanz.activate();
     }
 
@@ -128,6 +130,7 @@ namespace hg {
       m_gret.jump();
     } else if (m_gretActivateAction.isActive()) {
       m_gret.activate();
+      m_buttons.activate(Hero::Gret);
     }
 
     if (m_gretRunLeftAction.isActive()) {

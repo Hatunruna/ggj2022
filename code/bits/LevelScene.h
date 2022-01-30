@@ -8,6 +8,7 @@
 
 #include "LayerEntity.h"
 #include "HeroEntity.h"
+#include "ButtonsEntity.h"
 #include "PhysicsModel.h"
 
 namespace hg {
@@ -52,6 +53,7 @@ namespace hg {
     LayerEntity m_layer;
     HeroEntity m_hanz; // red
     HeroEntity m_gret; // blue
+    ButtonsEntity m_buttons;
   };
 
 }

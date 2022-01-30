@@ -96,6 +96,23 @@ namespace hg {
     }
   }
 
+  void PhysicsModel::switchColor(std::size_t index) {
+    assert(index < m_static.size());
+    auto & body = m_static[index];
+
+    switch (body.collision) {
+      case BodyCollision::WithHanz:
+        body.collision = BodyCollision::WithGret;
+        break;
+      case BodyCollision::WithGret:
+        body.collision = BodyCollision::WithHanz;
+        break;
+      case BodyCollision::WithBoth:
+        assert(false);
+        break;
+    }
+  }
+
   gf::Vector2f PhysicsModel::getPosition(Hero hero) const {
     switch (hero) {
       case Hero::Hanz:

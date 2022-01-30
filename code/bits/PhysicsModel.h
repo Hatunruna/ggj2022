@@ -20,6 +20,7 @@ namespace hg {
 
     bool jump(Hero hero);
     void setDirection(Hero hero, gf::Direction direction);
+    void switchColor(std::size_t index);
 
     gf::Vector2f getPosition(Hero hero) const;
     gf::Vector2f getVelocity(Hero hero) const;

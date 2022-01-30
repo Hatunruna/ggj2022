@@ -12,6 +12,8 @@ namespace hg {
   constexpr gf::Vector2f JumpImpulse = gf::vec(0.0f, -500.f);
   constexpr float RunVelocity = 300.0f;
 
+  constexpr float ButtonDistance = 48.0f;
+
 }
 
 #endif // HG_CONSTANTS_H
