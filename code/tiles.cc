@@ -342,7 +342,8 @@ int main() {
   base.saveToFile("27-empty.png");
   base.saveToFile("28-empty.png");
   base.saveToFile("29-empty.png");
-  base.saveToFile("30-empty.png");
+
+  makeSink(gf::Color::Green, "30-exit.png");
 
   makeSink(gf::Color::Gray(), "31-button.png");
 

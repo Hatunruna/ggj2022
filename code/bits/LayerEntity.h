@@ -21,6 +21,7 @@ namespace hg {
     GameScenery& m_scenery;
     const GameState& m_state;
     gf::Texture& m_backgroundTexture;
+    gf::Texture& m_exitTexture;
   };
 
 

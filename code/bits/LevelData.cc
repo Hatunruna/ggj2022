@@ -318,6 +318,10 @@ namespace hg {
           data.gret = position;
           gf::Log::debug("Gret: %i,%i\n", position.x, position.y);
           break;
+        case PlatformType::Exit:
+          data.exit = position;
+          gf::Log::debug("Exit: %i,%i\n", position.x, position.y);
+          break;
         case PlatformType::Button_P: {
           ButtonData button;
           button.type = ButtonType::Platform;
@@ -379,4 +383,3 @@ namespace hg {
   }
 
 }
-

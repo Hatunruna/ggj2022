@@ -19,7 +19,9 @@ namespace hg {
   , m_scenery(scenery)
   , m_state(state)
   , m_backgroundTexture(resources.getTexture("stage-background.jpg"))
+  , m_exitTexture(resources.getTexture("exit.png"))
   {
+    m_exitTexture.setSmooth(true);
   }
 
   void LayerEntity::update([[maybe_unused]] gf::Time time) {
@@ -64,6 +66,14 @@ namespace hg {
       target.draw(layer, states);
     }
 
+    gf::Sprite exit;
+    exit.setTexture(m_exitTexture);
+    exit.setAnchor(gf::Anchor::BottomCenter);
+    auto pos = data.exit * TileSize + TileSize * 0.5f;
+    pos.y += TileSize.height / 2 + 6;
+    exit.setPosition(pos);
+    // exit.scale(256.0f / 64.0f);
+    target.draw(exit, states);
   }
 
 }

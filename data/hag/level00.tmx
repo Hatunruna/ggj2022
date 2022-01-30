@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="1">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="1">
  <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32" spacing="2" margin="1" tilecount="64" columns="8">
   <image source="tileset.png" width="272" height="272"/>
  </tileset>
@@ -15,7 +15,7 @@
  </layer>
  <layer id="1" name="platforms" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJzt17kOgCAQRdFRG9TGfYHG//9KoSMERBEGY+YmryAhOQUVAgD2TBNyHPLFySeffPLJJ5988l/Uyw2OjQh+SF/1J2TffLsV3G/2tMM4M4tvNkeyC7nSsgrJ9/U3n/mvJPNrucaxFsEPSfe3RH5309dbIvpXKVv9gXP+v081Hw7V
+   eJzt18sKgCAQBdCpNj02vV9C9f9f2bhKRFMsNWIu3IUiHmFWMgBYIpVhV4iXlXzyySeffPLJJ/9BGmyraRfAd8lX/V6xt2F3T748uwmumSXYVNHM0jikda7w5QyWd5tiertv35S/+bn5iDe/wJaaVgF8l4j+7MmvLX0x44v+XbjN/8Ax/98nvioPIA==
   </data>
  </layer>
 </map>

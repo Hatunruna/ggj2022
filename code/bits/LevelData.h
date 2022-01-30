@@ -43,6 +43,8 @@ namespace hg {
     Limit_V     = 25,
     Limit_C     = 26,
 
+    Exit        = 30,
+
     Button_L    = 31,
   };
 
@@ -102,6 +104,8 @@ namespace hg {
     std::vector<ButtonData> buttons;
 
     std::vector<gf::SegmentI> limits;
+
+    gf::Vector2i exit = gf::vec(-1, -1);
 
     gf::Vector2i hanz = gf::vec(-1, -1);
     gf::Vector2i gret = gf::vec(-1, -1);
