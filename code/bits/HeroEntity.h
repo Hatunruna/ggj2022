@@ -6,6 +6,8 @@
 #include <gf/Entity.h>
 #include <gf/ResourceManager.h>
 
+#include <SFML/Audio.hpp>
+
 #include "AudioManager.h"
 #include "Hero.h"
 
@@ -50,6 +52,10 @@ namespace hg {
     gf::Animation m_fallAnimation;
     gf::Texture& m_landTexture;
     gf::Animation m_landAnimation;
+
+    // Audio
+    sf::Sound m_jumpSound;
+    sf::Sound m_landSound;
 
     // Actions
     gf::Direction m_facedDirection; // To handle pause position

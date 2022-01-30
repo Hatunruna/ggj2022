@@ -29,6 +29,21 @@ namespace hg {
 
       return resources.getTexture(dir + textureName);
     }
+
+    sf::SoundBuffer& getHeroSound(AudioManager& audio, const std::string& sample, Hero hero) {
+      std::string dir;
+      switch(hero) {
+      case Hero::Hanz:
+        dir = "hanz/";
+        break;
+
+      case Hero::Gret:
+        dir = "gret/";
+        break;
+      }
+
+      return audio.getSound(dir + sample);
+    }
   }
 
 
@@ -41,6 +56,8 @@ namespace hg {
   , m_jumpTexture(getHeroTexture(resources, "jump.png", hero))
   , m_fallTexture(getHeroTexture(resources, "fall.png", hero))
   , m_landTexture(getHeroTexture(resources, "land.png", hero))
+  , m_jumpSound(getHeroSound(audio, "jump.ogg", hero))
+  , m_landSound(audio.getSound("land.ogg"))
   , m_facedDirection(gf::Direction::Left)
   , m_moveDirection(gf::Direction::Center)
   {
@@ -58,6 +75,10 @@ namespace hg {
     m_fallAnimation.setLoop(false);
     m_landAnimation.addTileset(m_landTexture, gf::vec(3, 3), gf::seconds(1.0f / 25.0f), LandAnimationFrameCount);
     m_landAnimation.setLoop(false);
+
+    // Set audio volume
+    m_jumpSound.setVolume(10.0f);
+    m_landSound.setVolume(10.0f);
   }
 
   void HeroEntity::setDirection(gf::Direction direction) {
@@ -123,6 +144,7 @@ namespace hg {
       if (m_physics.jump(m_hero)) {
         m_jumpAnimation.reset();
         m_state = HeroState::Jump;
+        m_jumpSound.play();
       }
     }
   }
@@ -147,6 +169,7 @@ namespace hg {
         m_state = HeroState::Land;
         m_landAnimation.reset();
         m_elapsedTime = gf::seconds(0.0f);
+        m_landSound.play();
       }else {
         m_jumpAnimation.update(time);
       }
@@ -158,6 +181,7 @@ namespace hg {
         m_state = HeroState::Land;
         m_landAnimation.reset();
         m_elapsedTime = gf::seconds(0.0f);
+        m_landSound.play();
       }
       break;
 
