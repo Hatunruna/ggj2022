@@ -59,7 +59,7 @@ namespace hg {
   , m_fallTexture(getHeroTexture(resources, "fall.png", hero))
   , m_landTexture(getHeroTexture(resources, "land.png", hero))
   , m_activateTexture(getHeroTexture(resources, "activate.png", hero))
-  , m_jumpSound(getHeroSound(audio, "jump.ogg", hero))
+  , m_jumpSound(audio.getSound("jump.ogg"))
   , m_landSound(audio.getSound("land.ogg"))
   , m_runSound(getHeroSound(audio, "run.ogg", hero))
   , m_facedDirection(gf::Direction::Left)
