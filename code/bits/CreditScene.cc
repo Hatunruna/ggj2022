@@ -11,7 +11,7 @@ namespace hg {
   , m_game(game)
   , m_quitAction("Quit")
   , m_triggerAction("TriggerAction")
-  , m_quitButton("Quit", game.resources.getFont("Underdog.otf"))
+  , m_quitButton("Main Menu", game.resources.getFont("Underdog.otf"))
   , m_creditEntity(game.resources, game.audio)
   , m_upAction("UpAction")
   , m_downAction("DownAction")
@@ -52,7 +52,7 @@ namespace hg {
 
     setupButton(m_quitButton, [&] () {
         gf::Log::debug("Quit pressed!\n");
-        m_game.replaceAllScenes(m_game.start);
+        m_game.replaceAllScenes(m_game.menu);
     });
   }
 
