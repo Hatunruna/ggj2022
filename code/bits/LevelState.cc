@@ -1,9 +1,13 @@
 #include "LevelState.h"
 
+#include <cassert>
+
 namespace hg {
   void LevelState::loadLevel(const GameData& data, std::size_t number) {
     assert(number < data.levels.size());
     const LevelData& level = data.levels[number];
+
+    platforms.clear();
 
     for (auto & platform : level.platforms) {
       PlatformState state;
@@ -12,15 +16,18 @@ namespace hg {
       {
         case PlatformType::Neutral_H:
         case PlatformType::Neutral_V:
-          state.color = HeroColor::NEUTRAL;
+          state.color = HeroColor::Neutral;
           break;
         case PlatformType::Red_H:
         case PlatformType::Red_V:
-          state.color = HeroColor::RED;
+          state.color = HeroColor::Red;
           break;
         case PlatformType::Blue_H:
         case PlatformType::Blue_V:
-          state.color = HeroColor::BLUE;
+          state.color = HeroColor::Blue;
+          break;
+        default:
+          assert(false);
           break;
       }
 

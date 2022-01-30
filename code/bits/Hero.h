@@ -8,9 +8,9 @@ namespace hg {
   };
 
   enum class HeroColor {
-    RED,
-    BLUE,
-    NEUTRAL,
+    Red,
+    Blue,
+    Neutral,
   };
 }
 

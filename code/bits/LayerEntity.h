@@ -5,16 +5,18 @@
 
 namespace hg {
 
-  class GameScenery;
-  class GameState;
+  struct GameData;
+  struct GameScenery;
+  struct GameState;
 
   class LayerEntity : public gf::Entity {
   public:
-    LayerEntity(GameScenery& scenery, const GameState& state);
+    LayerEntity(const GameData& data, GameScenery& scenery, const GameState& state);
     void update(gf::Time time) override;
     void render(gf::RenderTarget &target, const gf::RenderStates &states) override;
 
   private:
+    const GameData& m_data;
     GameScenery& m_scenery;
     const GameState& m_state;
   };
