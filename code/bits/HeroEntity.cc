@@ -146,7 +146,7 @@ namespace hg {
       break;
     }
 
-    if (m_state != HeroState::Activate && m_state != HeroState::Land) {
+    if (m_state != HeroState::Activate) {
       m_physics.setDirection(m_hero, direction);
     } else {
       m_physics.setDirection(m_hero, gf::Direction::Center);
